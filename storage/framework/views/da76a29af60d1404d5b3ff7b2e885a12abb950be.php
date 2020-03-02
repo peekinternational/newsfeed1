@@ -1,15 +1,13 @@
-@extends('admin.layouts.master')
-
-@section('style')
-<link href="{{ asset('frontend-assets/css/dropzone.css') }}" rel="stylesheet">
+<?php $__env->startSection('style'); ?>
+<link href="<?php echo e(asset('frontend-assets/css/dropzone.css')); ?>" rel="stylesheet">
 <style>
 .dropzone .dz-preview {
     margin-left: -117px;
 }
 </style>
 
-@endsection
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
 <?php
   $section_id = Request::segment('4');
  ?>
@@ -44,7 +42,7 @@
                 </p>
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="{{ url('dashboard/logout') }}">Logout</a>
+                <a class="dropdown-item" href="<?php echo e(url('dashboard/logout')); ?>">Logout</a>
               </div>
             </li>
           </ul>
@@ -82,7 +80,8 @@
                   <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="text">
                       <form method="post" action="" enctype="multipart/form-data"  id="TextForm">
-                      {{ csrf_field() }}
+                      <?php echo e(csrf_field()); ?>
+
 
                         <div class="form-group">
                           <input type="text" name="post_title" id="texttitledata" class="form-control required2" placeholder="Title" required maxlength="130" onkeyup="texttitle(this)">
@@ -96,7 +95,7 @@
                             <input type="text" name="file_name_image" class="select-img" id="file_name_image" placeholder="Insert a cover image (mandatory)">
                             <label for="insert-cover">
                               <button class="btn btn-default image-btn">Insert</button>
-                            <input type="file" name="cover_image" id="insert-image-text" onchange="document.getElementById('file_name_image').value = this.value.split('\\').pop().split('/').pop()">
+                            <input type="file" name="cover_image" id="insert-image" onchange="document.getElementById('file_name_image').value = this.value.split('\\').pop().split('/').pop()">
                             </label>
                         </div>
                         <div class="form-group pull-right">
@@ -104,12 +103,13 @@
                         </div>
                       </form>
                       <div class="formbody">
-                         <img src="{{asset('/frontend-assets/gif/loader.gif')}}" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
+                         <img src="<?php echo e(asset('/frontend-assets/gif/loader.gif')); ?>" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
                          <div class="form-group">
                            <div class="row" style="display: block;flex-wrap: wrap; margin-right: -15px;margin-left: -15px;">
                              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                <div class="dorgz" style="position: relative;height: 300px;">
-                                 <form id='frmTarget' name='dropzone' action="{{url('dashboard/imagepost')}}" class="dropzone" >{{ csrf_field() }}
+                                 <form id='frmTarget' name='dropzone' action="<?php echo e(url('dashboard/imagepost')); ?>" class="dropzone" ><?php echo e(csrf_field()); ?>
+
                                  </form>
                                  <button type="button " class="btn btn-primary background-blue" id="buttonfreetext" style="float: right;margin-top: 58px;">Submit</button>
                                </div>
@@ -120,12 +120,13 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="image">
                       <form method="post" action="" enctype="multipart/form-data" id="freelistingForm">
-                      {{ csrf_field() }}
+                      <?php echo e(csrf_field()); ?>
+
                         <div class="form-group">
                           <input type="text" name="post_title" id="imagetitledata" class="form-control required" placeholder="Title" required maxlength="130" onkeyup="imagetitle(this)">
                           <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
                         </div>
-                        <input type="hidden" name="section_id" value="{{$section_id}}">
+                        <input type="hidden" name="section_id" value="<?php echo e($section_id); ?>">
 
                         <div class="input-field">
                           <label class="active">Photos</label>
@@ -142,12 +143,13 @@
 
                       </form>
                        <div class="formbody">
-                          <img src="{{asset('/frontend-assets/gif/loader.gif')}}" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
+                          <img src="<?php echo e(asset('/frontend-assets/gif/loader.gif')); ?>" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
                           <div class="form-group">
                             <div class="row" style="display: block;flex-wrap: wrap; margin-right: -15px;margin-left: -15px;">
                               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <div class="dorgz" style="position: relative;height: 300px;">
-                                  <form id='frmTarget' name='dropzone' action="{{url('dashboard/imagepost')}}" class="dropzone" >{{ csrf_field() }}
+                                  <form id='frmTarget' name='dropzone' action="<?php echo e(url('dashboard/imagepost')); ?>" class="dropzone" ><?php echo e(csrf_field()); ?>
+
                                   </form>
                                   <button type="button " class="btn btn-primary background-blue" id="buttonfreeimage" style="float: right;margin-top: 58px;">Submit</button>
                                 </div>
@@ -157,17 +159,18 @@
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="external_links">
-                      @if ($errors->any())
+                      <?php if($errors->any()): ?>
                       <div class="alert alert-danger">
                          <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                          </ul>
                       </div>
-                      @endif
-                      <form method="post" action="{{ url('dashboard/mediastore') }}" enctype="multipart/form-data">
-                      {{ csrf_field() }}
+                      <?php endif; ?>
+                      <form method="post" action="<?php echo e(url('dashboard/mediastore')); ?>" enctype="multipart/form-data">
+                      <?php echo e(csrf_field()); ?>
+
                         <div class="form-group">
                           <input type="text" name="post_title" id="linktitledata" class="form-control" placeholder="Title" maxlength="130" onkeyup="linktitle(this)" required>
                         </div>
@@ -186,12 +189,13 @@
                         </div>
                       </form>
                       <div class="formbody">
-                         <img src="{{asset('/frontend-assets/gif/loader.gif')}}" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
+                         <img src="<?php echo e(asset('/frontend-assets/gif/loader.gif')); ?>" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
                          <div class="form-group">
                            <div class="row" style="display: block;flex-wrap: wrap; margin-right: -15px;margin-left: -15px;">
                              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                <div class="dorgz" style="position: relative;height: 300px;">
-                                 <form id='frmTarget' name='dropzone' action="{{url('dashboard/imagepost')}}" class="dropzone" >{{ csrf_field() }}
+                                 <form id='frmTarget' name='dropzone' action="<?php echo e(url('dashboard/imagepost')); ?>" class="dropzone" ><?php echo e(csrf_field()); ?>
+
                                  </form>
                                  <button type="button " class="btn btn-primary background-blue" id="buttonfree" style="float: right;margin-top: 58px;">Submit</button>
                                </div>
@@ -211,13 +215,13 @@
   </div>
 </div>
 
-@endsection
-@section('script')
-<script src="{{ asset('/frontend-assets/js/dropzone.js') }}"></script>
-  <script src="{{asset('frontend-assets/dashboard/ckeditor/ckeditor.js')}}"></script>
-  <script src="{{asset('frontend-assets/dashboard/ckeditor/js/sample.js')}}"></script>
-  <script src="{{asset('frontend-assets/dashboard/ckeditor/js/sf.js')}}"></script>
-<script src="{{ asset('frontend-assets/tinymce/tinymce.min.js') }}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
+<script src="<?php echo e(asset('/frontend-assets/js/dropzone.js')); ?>"></script>
+  <script src="<?php echo e(asset('frontend-assets/dashboard/ckeditor/ckeditor.js')); ?>"></script>
+  <script src="<?php echo e(asset('frontend-assets/dashboard/ckeditor/js/sample.js')); ?>"></script>
+  <script src="<?php echo e(asset('frontend-assets/dashboard/ckeditor/js/sf.js')); ?>"></script>
+<script src="<?php echo e(asset('frontend-assets/tinymce/tinymce.min.js')); ?>"></script>
 <script>
 tinymce.init({
   selector: '.tex-editor',
@@ -339,7 +343,7 @@ autoProcessQueue: false,
 acceptedFiles: ".jpg,.png,.mp4,.mkv,.avi",
 parallelUploads: 1,
 addRemoveLinks: true,
-url: "{{ url('dashboard/gallery/imagegallery')}}",
+url: "<?php echo e(url('dashboard/gallery/imagegallery')); ?>",
 init: function () {
 
   var myDropzone = this;
@@ -377,7 +381,7 @@ init: function () {
   this.on("complete", function (file) {
       if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
 
-        window.location.href = "{{url('/dashboard/gallery')}}";
+        window.location.href = "<?php echo e(url('/dashboard/gallery')); ?>";
 
       }
     });
@@ -391,4 +395,6 @@ init: function () {
       $(this).addClass('active');
   });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>

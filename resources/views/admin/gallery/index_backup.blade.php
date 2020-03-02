@@ -37,9 +37,9 @@
 .item:hover .edit-icon{
   display: block !important;
 }
-/* .owl-dots{
+.owl-dots{
   display: none;
-} */
+}
 .owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-prev {
   position: absolute;
 }
@@ -66,58 +66,6 @@
   border-radius: 50%;
   padding: 23px;
   height: 24px;
-}
-.image-list li img {
-  width: 147px !important;
-  height: 105px !important;
-}
-.edit-icon2 {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    padding: 9px;
-}
-.ul-list{
-  display: block;
-  padding: 0px 5px;
-  border-bottom: 1px solid #eee !important;
-  white-space: nowrap;
-  overflow-x: auto;
-  /* background: #fff; */
-  margin: 0;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
-.ul-list::-webkit-scrollbar {
-  display: none;
-}
-.ul-list li{
-  display: inline-block;
-  position: relative;
-  list-style: none;
-  font-size: 12px;
-  margin: 0 5px;
-  font-weight: 400;
-  line-height: 15px;
-  cursor: pointer;
-  vertical-align: middle;
-  color: #414e5a;
-}
-.ul-list li span{
-  position: relative;
-  top: 0px;
-  vertical-align: middle;
-}
-.nav-tabs.ul-list li{
-  display: contents;
-}
-.nav-tabs.ul-list li a{
-  display: inline-block;
-  color: #414e5a;
-  font-weight: 500;
-}
-.nav-tabs.ul-list li.active a{
-  color: #da4f4f;
 }
 </style>
 
@@ -274,54 +222,6 @@
                           <p class="mb-0">Freela team region</p>
                         </div>
                       </div>
-                      <div class="item">
-                        <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
-                        </div>
-                        <div class="edit-icon d-none">
-                          <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
-                          <a href=""><i class="fa fa-trash text-danger"></i></a>
-                        </div>
-                        <div class="py-2 pl-1">
-                          <p class="mb-0">Freela team region</p>
-                        </div>
-                      </div>
-                      <div class="item">
-                        <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
-                        </div>
-                        <div class="edit-icon d-none">
-                          <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
-                          <a href=""><i class="fa fa-trash text-danger"></i></a>
-                        </div>
-                        <div class="py-2 pl-1">
-                          <p class="mb-0">Freela team region</p>
-                        </div>
-                      </div>
-                      <div class="item">
-                        <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
-                        </div>
-                        <div class="edit-icon d-none">
-                          <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
-                          <a href=""><i class="fa fa-trash text-danger"></i></a>
-                        </div>
-                        <div class="py-2 pl-1">
-                          <p class="mb-0">Freela team region</p>
-                        </div>
-                      </div>
-                      <div class="item">
-                        <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
-                        </div>
-                        <div class="edit-icon d-none">
-                          <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
-                          <a href=""><i class="fa fa-trash text-danger"></i></a>
-                        </div>
-                        <div class="py-2 pl-1">
-                          <p class="mb-0">Freela team region</p>
-                        </div>
-                      </div>
                     </div>
                   </div>
                   <div class="col-md-2">
@@ -336,72 +236,36 @@
                 <div class="row justify-content-center border-bottom border-secondary">
                   <h4 class="w-100 px-3 pt-2">{{$section->title}}</h4>
                   <div class="col-md-10">
-                    <div class="row">
-
-                    <div class="col-md-2">
-                      <div class="item text-center h-105" style="">
+                    <div class="owl-carousel owl-theme">
+                      <div class="item text-center h-105">
                         <div class="rounded border border-white h-100 overflow-hidden bg-secondary py-4">
                           <a href="{{url('dashboard/gallery/add-content/'.$section->id)}}"><i class="fa fa-plus-circle fa-2x text-white mt-2"></i></a>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-md-8">
-                    <div class="">
+                      @foreach(Feed::getgallery($section->id) as $img)
+                      <div class="item">
+                        <div class="border border-white rounded mh-100 overflow-hidden h-105">
+                          <?php
+                          // print_r($img->cover_image); die;
+                          $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
+                          if($img->cover_image){
+                            $cover_image=$img->cover_image;
+                          }else{
+                            $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
+                          }
 
-                      <div id="gallery">
-                        <div id="image-container">
-                          <ul id="image-list" class="image-list ul-list">
-                          <!-- <div class="item"> -->
-                          @foreach(Feed::getgallery($section->id) as $img)
-
-                              <?php
-                              // print_r($img->cover_image); die;
-                              $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-                              if($img->cover_image){
-                                $cover_image=$img->cover_image;
-                              }else{
-                                $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-                              }
-
-                              ?>
-                                <!-- <li id="image_{{$img->id}}" ><img src="{{$cover_image}}" class="rounded mh-100 h-100"></li> -->
-                                <!-- <div class="border border-white rounded mh-100 overflow-hidden h-105"> -->
-
-
-                                  <li id="image_{{$img->id}}" >
-                                    <img src="{{$cover_image}}" class="rounded">
-                                    <div class="edit-icon2 ">
-                                    <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
-                                    <a href=""><i class="fa fa-trash text-danger"></i></a>
-                                  </div>
-                                  <span>{{$img->title}}</span> </li>
-
-                                <!-- </div> -->
-
-                              <!-- <div class="edit-icon d-none">
-                                <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
-                                <a href=""><i class="fa fa-trash text-danger"></i></a>
-                              </div>
-                              <div class="py-2 pl-1">
-                                <p class="mb-0">{{$img->title}}</p>
-                              </div> -->
-                            <!-- </div> -->
+                          ?>
+                          <img src="{{$cover_image}}" class="rounded mh-100 h-100">
+                        </div>
+                        <div class="edit-icon d-none">
+                          <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
+                          <a href=""><i class="fa fa-trash text-danger"></i></a>
+                        </div>
+                        <div class="py-2 pl-1">
+                          <p class="mb-0">{{$img->title}}</p>
+                        </div>
+                      </div>
                       @endforeach
-                    </ul>
-                    </div>
-                    </div>
-                      <!-- <div class="item">
-                        <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
-                        </div>
-                        <div class="edit-icon d-none">
-                          <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
-                          <a href=""><i class="fa fa-trash text-danger"></i></a>
-                        </div>
-                        <div class="py-2 pl-1">
-                          <p class="mb-0">Freela team region</p>
-                        </div>
-                      </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
                           <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
@@ -461,11 +325,21 @@
                         <div class="py-2 pl-1">
                           <p class="mb-0">Freela team region</p>
                         </div>
-                      </div> -->
+                      </div>
+                      <div class="item">
+                        <div class="border border-white rounded mh-100 overflow-hidden h-105">
+                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                        </div>
+                        <div class="edit-icon d-none">
+                          <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
+                          <a href=""><i class="fa fa-trash text-danger"></i></a>
+                        </div>
+                        <div class="py-2 pl-1">
+                          <p class="mb-0">Freela team region</p>
+                        </div>
+                      </div>
 
                     </div>
-                    </div>
-                  </div>
                   </div>
                   <div class="col-md-2">
                     <div class="action">
@@ -635,7 +509,6 @@
     $('.owl-carousel').owlCarousel({
       loop: true,
       margin: 10,
-      nav: true,
       responsiveClass: true,
       responsive: {
         0: {
@@ -644,28 +517,16 @@
         },
         600: {
           items: 3,
-          nav: true
+          nav: false
         },
         1000: {
-          items: 3,
+          items: 6,
           nav: true,
           loop: false,
           margin: 20
         }
       }
-    });
-    $(".next").click(function(){
-  $('.owl-carousel').trigger('owl.next');
-})
-$(".prev").click(function(){
-  $('.owl-carousel').trigger('owl.prev');
-})
-$(".play").click(function(){
-  $('.owl-carousel').trigger('owl.play',1000); //owl.play event accept autoPlay speed as second parameter
-})
-$(".stop").click(function(){
-  $('.owl-carousel').trigger('owl.stop');
-})
+    })
   })
   $( function() {
       $( ".item" ).draggable();
@@ -724,42 +585,4 @@ $(".stop").click(function(){
     });
 
   </script>
-  <script>
-  			 $(document).ready(function () {
-  					 var dropIndex;
-  					 $(".image-list").sortable({
-  								 update: function(event, ui) {
-                     dropIndex = ui.item.index();
-                    changePosition();
-  							 }
-  					 });
-
-             function changePosition() {
-  					 // $('#submit').click(function (e) {
-  							 var imageIdsArray = [];
-  							 $('.image-list li').each(function (index) {
-  									 // if(index <= dropIndex) {
-  											 var id = $(this).attr('id');
-  											 var split_id = id.split("_");
-  											 imageIdsArray.push(split_id[1]);
-  									 // }
-  							 });
-
-  							 $.ajax({
-  									 url: "{{ url('/dashboard/gallery/reorderUpdate')}}",
-  									 type: 'post',
-  									 data: {imageIds: imageIdsArray,_token:"{{csrf_token()}}"},
-  									 success: function (response) {
-                       toastr.success('Order Updated successfully', '', {timeOut: 5000, positionClass: "toast-top-right"});
-  											// $("#txtresponse").css('display', 'inline-block');
-  											// $("#txtresponse").text(response);
-  									 }
-  							 });
-  							 // e.preventDefault();
-  					 // });
-           }
-
-  			 });
-
-  	 </script>
 @endsection

@@ -20,5 +20,11 @@ class Feed {
        $role= DB::table('wingg_app_position')->where('company_id',$company_id)->get();
         return $role;
     }
+    public function getgallery($id){
+
+      $company_id=Session::get('chat_admin')->company_id;
+      $image= DB::table('wingg_app_gallery')->where('company_id',$company_id)->where('section_id',$id)->get();
+       return $image;
+   }
 }
 ?>

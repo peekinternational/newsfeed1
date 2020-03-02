@@ -1326,4 +1326,101 @@ public function imagestore(Request $request)
          );
          echo json_encode($x);
      }
+
+     public function show_gallery(Request $request)
+     {
+       $company_id=$request->session()->get('chat_admin')->company_id;
+       $sections=DB::table('wingg_app_section')->where('company_id',$company_id)->get();
+       // dd($sections);
+       return view('admin.gallery.index',compact('sections'));
+
+     }
+     public function gallerySectionstore(Request $request)
+     {
+       // dd($request->all());
+       $company_id=$request->session()->get('chat_admin')->company_id;
+           $input['title']=$request->input('title');
+           $input['company_id']=$company_id;
+           $get_type = $request->input('type');
+           $data = explode(',',$get_type);
+           $type = $data[0];
+           $id = $data[1];
+           $input['type']=$type;
+           $input['team_role_id']=$id;
+           $input['created_at']=  date('Y-m-d H:i:s');
+           $input['updated_at']=  date('Y-m-d H:i:s');
+           // dd($input);
+           $section=DB::table('wingg_app_section')->insertGetId( $input);
+           echo $section;
+
+     }
+     public function galleryimagestore(Request $request)
+         {
+            // dd($request->all());
+             if($request->isMethod('post')){
+              //  dd($request->all());
+             $company_id=$request->session()->get('chat_admin')->company_id;
+                 $input['title']=$request->input('post_title');
+                 $input['company_id']=$company_id;
+                 $input['section_id']=$request->input('section_id');
+                 $input['created_at']=  date('Y-m-d H:i:s');
+                 $input['updated_at']=  date('Y-m-d H:i:s');
+                  $image = $request->file('cover_image');
+                  $file = $request->file('file');
+     //dd($image);
+                 if ($image !="") {
+                 $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
+                 $destinationPath = public_path('gallery/cover');
+                 $image->move($destinationPath, $profilePicture);
+                 $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/gallery/cover/'.$profilePicture;
+                 $input['cover_image']=$imagepath;
+                 }
+
+                 if ($file !="") {
+                 $profilePictures = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$file->getClientOriginalExtension();
+                 $destinationPaths = public_path('gallery/images');
+                 $file->move($destinationPaths, $profilePictures);
+                 $imagepaths='http://phplaravel-355796-1161525.cloudwaysapps.com/gallery/images/'.$profilePictures;
+                 $input['image']=$imagepaths;
+                 }
+                 // dd($input);
+                $post_id=DB::table('wingg_app_gallery')->insertGetId($input);
+                $data['order']=$post_id;
+                $post=DB::table('wingg_app_gallery')->where('id',$post_id)->update($data);
+
+     		   if($post_id !=0){
+     			   $request->session()->flash('post', 'Content Created Sussessfully');
+                 //return redirect('/dashboard');
+            echo $post_id;
+           }
+             }
+            // return view('admin.add-post');
+         }
+
+         public function reorder_images(Request $request)
+         {
+           // dd($request->all());
+           $imageIdsArray = $request->input('imageIds');
+
+           $count = 1;
+           foreach ($imageIdsArray as $id) {
+
+             // $sql = $conn->prepare("UPDATE tbl_images SET image_order=? WHERE id=?");
+             $imageOrder = $count;
+             $imageId = $id;
+             $input['order']=$imageOrder;
+             // dd($imageOrder.'/'.$imageId);
+             // dd($input,$imageId);
+             $data = DB::table('wingg_app_gallery')->where('id',$imageId)->update($input);
+             // dd($data);
+             $response = 'Images order is updated';
+             // if ($data !=0) {
+             // }else {
+             //   $response = 'Problem in Changing the Image Order';
+             // }
+             $count ++;
+           }
+
+           echo $response;
+         }
 }

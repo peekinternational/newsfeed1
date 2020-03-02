@@ -1,16 +1,14 @@
-@extends('admin.layouts.master')
-
-@section('style')
+<?php $__env->startSection('style'); ?>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" href="{{asset('frontend-assets/css/owl.carousel.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('frontend-assets/css/owl.theme.default.min.css')}}">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('frontend-assets/css/owl.carousel.min.css')); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('frontend-assets/css/owl.theme.default.min.css')); ?>">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="{{asset('frontend-assets/dashboard/css/jquery-ui.css')}}">
-<link rel="stylesheet" href="{{asset('frontend-assets/dashboard/css/style2.css')}}">
-<script src="{{asset('frontend-assets/dashboard/js/jquery-ui.js')}}"></script>
+<link rel="stylesheet" href="<?php echo e(asset('frontend-assets/dashboard/css/jquery-ui.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('frontend-assets/dashboard/css/style2.css')); ?>">
+<script src="<?php echo e(asset('frontend-assets/dashboard/js/jquery-ui.js')); ?>"></script>
 
 <style>
 .daterangepicker td.in-range {
@@ -121,8 +119,8 @@
 }
 </style>
 
-@endsection
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
 
   <div class="wrapper">
     <div class="main-panel">
@@ -148,7 +146,7 @@
 
             <ul class="navbar-nav">
               <li>
-                <a href="{{url('dashboard/allcsv')}}" class="btn top-btn csv-btn" disabled>Download <br> CSV</a>
+                <a href="<?php echo e(url('dashboard/allcsv')); ?>" class="btn top-btn csv-btn" disabled>Download <br> CSV</a>
                 <a href="" class="btn btn-primary top-btn new-btn" id="top_btn" data-toggle="modal" data-target="#create_section" style="background: #63c6bd;" disabled>New Section</a>
               </li>
               <li class="nav-item btn-rotate dropdown">
@@ -158,7 +156,7 @@
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="{{ url('dashboard/logout') }}">Logout</a>
+                  <a class="dropdown-item" href="<?php echo e(url('dashboard/logout')); ?>">Logout</a>
                 </div>
               </li>
 
@@ -189,29 +187,29 @@
                     <select class="form-control border-gray" id="main_select" placeholder="">
                       <option disabled selected hidden>Roles/Teams</option>
                       <option value="" style="font-weight: 700;">Teams</option>
-                      @foreach(Feed::teams() as $team)
-                      <option value="team,{{$team->id}}">{{$team->name}}</option>
-                      @endforeach
+                      <?php $__currentLoopData = Feed::teams(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $team): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <option value="team,<?php echo e($team->id); ?>"><?php echo e($team->name); ?></option>
+                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                       <option value="" style="font-weight: 700;">Roles</option>
-                      @foreach(Feed::roles() as $role)
-                      <option value="role,{{$role->id}}">{{$role->name}}</option>
-                      @endforeach
+                      <?php $__currentLoopData = Feed::roles(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <option value="role,<?php echo e($role->id); ?>"><?php echo e($role->name); ?></option>
+                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                   </div>
                   <!-- <div class="form-group">
                     <select name="team" id="get_teams" class="form-control border-gray" onchange="teams(this);">
                             <option value="">Select Team</option>
-                            @foreach(Feed::teams() as $team)
-                         <option value="{{$team->id}}">{{$team->name}}</option>
-                            @endforeach
+                            <?php $__currentLoopData = Feed::teams(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $team): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                         <option value="<?php echo e($team->id); ?>"><?php echo e($team->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                           </select>
                   </div>
                   <div class="form-group">
                       <select name="role" id="get_role" class="form-control border-gray" onchange="postion(this);">
                             <option value="">Select Role</option>
-                            @foreach(Feed::roles() as $role)
-                            <option value="{{$role->id}}">{{$role->name}}</option>
-                            @endforeach
+                            <?php $__currentLoopData = Feed::roles(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($role->id); ?>"><?php echo e($role->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                           </select>
                   </div> -->
                   <!-- <button type="submit" class="btn btn-default">Submit</button> -->
@@ -219,22 +217,24 @@
                 <p class="pull-right mb-0" style="line-height: 36px"><span id="show_record"></span> </p>
               </div>
             </div>
-            @if(Session::has('post'))
+            <?php if(Session::has('post')): ?>
                <div class="alert alert-success">
-                  {{ Session::get('post') }}
+                  <?php echo e(Session::get('post')); ?>
+
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                   </button>
                </div>
-               @endif
-               @if(Session::has('delnum'))
+               <?php endif; ?>
+               <?php if(Session::has('delnum')): ?>
                <div class="alert alert-success">
-                  {{ Session::get('delnum') }}
+                  <?php echo e(Session::get('delnum')); ?>
+
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                   </button>
                </div>
-               @endif
+               <?php endif; ?>
             <div class="card" style="background-color: #dbdedf;">
               <!-- <div class="card-header">
                 <h4 class="card-title"> Jobs List</h4>
@@ -247,12 +247,12 @@
                     <div class="owl-carousel owl-theme">
                       <div class="item text-center h-105">
                         <div class="rounded border border-white h-100 overflow-hidden bg-secondary py-4">
-                          <a href="{{url('dashboard/gallery/add-content')}}"><i class="fa fa-plus-circle fa-2x text-white mt-2"></i></a>
+                          <a href="<?php echo e(url('dashboard/gallery/add-content')); ?>"><i class="fa fa-plus-circle fa-2x text-white mt-2"></i></a>
                         </div>
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc1.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc1.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary pr-2"></i></a>
@@ -264,7 +264,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -276,7 +276,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -288,7 +288,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -300,7 +300,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -312,7 +312,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -332,16 +332,16 @@
                     </div>
                   </div>
                 </div>
-                @foreach($sections as $section)
+                <?php $__currentLoopData = $sections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $section): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="row justify-content-center border-bottom border-secondary">
-                  <h4 class="w-100 px-3 pt-2">{{$section->title}}</h4>
+                  <h4 class="w-100 px-3 pt-2"><?php echo e($section->title); ?></h4>
                   <div class="col-md-10">
                     <div class="row">
 
                     <div class="col-md-2">
                       <div class="item text-center h-105" style="">
                         <div class="rounded border border-white h-100 overflow-hidden bg-secondary py-4">
-                          <a href="{{url('dashboard/gallery/add-content/'.$section->id)}}"><i class="fa fa-plus-circle fa-2x text-white mt-2"></i></a>
+                          <a href="<?php echo e(url('dashboard/gallery/add-content/'.$section->id)); ?>"><i class="fa fa-plus-circle fa-2x text-white mt-2"></i></a>
                         </div>
                       </div>
                     </div>
@@ -352,7 +352,7 @@
                         <div id="image-container">
                           <ul id="image-list" class="image-list ul-list">
                           <!-- <div class="item"> -->
-                          @foreach(Feed::getgallery($section->id) as $img)
+                          <?php $__currentLoopData = Feed::getgallery($section->id); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $img): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                               <?php
                               // print_r($img->cover_image); die;
@@ -364,17 +364,17 @@
                               }
 
                               ?>
-                                <!-- <li id="image_{{$img->id}}" ><img src="{{$cover_image}}" class="rounded mh-100 h-100"></li> -->
+                                <!-- <li id="image_<?php echo e($img->id); ?>" ><img src="<?php echo e($cover_image); ?>" class="rounded mh-100 h-100"></li> -->
                                 <!-- <div class="border border-white rounded mh-100 overflow-hidden h-105"> -->
 
 
-                                  <li id="image_{{$img->id}}" >
-                                    <img src="{{$cover_image}}" class="rounded">
+                                  <li id="image_<?php echo e($img->id); ?>" >
+                                    <img src="<?php echo e($cover_image); ?>" class="rounded">
                                     <div class="edit-icon2 ">
                                     <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
                                     <a href=""><i class="fa fa-trash text-danger"></i></a>
                                   </div>
-                                  <span>{{$img->title}}</span> </li>
+                                  <span><?php echo e($img->title); ?></span> </li>
 
                                 <!-- </div> -->
 
@@ -383,16 +383,16 @@
                                 <a href=""><i class="fa fa-trash text-danger"></i></a>
                               </div>
                               <div class="py-2 pl-1">
-                                <p class="mb-0">{{$img->title}}</p>
+                                <p class="mb-0"><?php echo e($img->title); ?></p>
                               </div> -->
                             <!-- </div> -->
-                      @endforeach
+                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                     </div>
                     </div>
                       <!-- <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -404,7 +404,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -416,7 +416,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -428,7 +428,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -440,7 +440,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -452,7 +452,7 @@
                       </div>
                       <div class="item">
                         <div class="border border-white rounded mh-100 overflow-hidden h-105">
-                          <img src="{{asset('frontend-assets/dashboard/img/faces/abc2.jpg')}}" class="rounded mh-100 h-100">
+                          <img src="<?php echo e(asset('frontend-assets/dashboard/img/faces/abc2.jpg')); ?>" class="rounded mh-100 h-100">
                         </div>
                         <div class="edit-icon d-none">
                           <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit text-primary"></i></a>
@@ -475,7 +475,7 @@
                     </div>
                   </div>
                 </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </div>
             </div>
 
@@ -625,10 +625,10 @@
     </div>
   </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
-<script type="text/javascript" src="{{asset('frontend-assets/js/owl.carousel.min.js')}}"></script>
+<?php $__env->startSection('script'); ?>
+<script type="text/javascript" src="<?php echo e(asset('frontend-assets/js/owl.carousel.min.js')); ?>"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
   $(document).ready(function() {
@@ -687,7 +687,7 @@ $(".stop").click(function(){
     	e.preventDefault();
       var title = $('#new_section_title').val();
       var type = $('#main_select').val();
-      var _token = "{{csrf_token()}}";
+      var _token = "<?php echo e(csrf_token()); ?>";
       // alert(type);
     	// form = new FormData();
     	// form.append('title',title);
@@ -702,8 +702,8 @@ $(".stop").click(function(){
       });
     	$.ajax({
     		type: "POST",
-    		url:" {{ url('dashboard/gallery/add_section')}}",
-    		data: {title:title,type:type,_token:"{{csrf_token()}}"},
+    		url:" <?php echo e(url('dashboard/gallery/add_section')); ?>",
+    		data: {title:title,type:type,_token:"<?php echo e(csrf_token()); ?>"},
     		// cache: false,
     		// contentType: false,
     		// processData: false,
@@ -746,9 +746,9 @@ $(".stop").click(function(){
   							 });
 
   							 $.ajax({
-  									 url: "{{ url('/dashboard/gallery/reorderUpdate')}}",
+  									 url: "<?php echo e(url('/dashboard/gallery/reorderUpdate')); ?>",
   									 type: 'post',
-  									 data: {imageIds: imageIdsArray,_token:"{{csrf_token()}}"},
+  									 data: {imageIds: imageIdsArray,_token:"<?php echo e(csrf_token()); ?>"},
   									 success: function (response) {
                        toastr.success('Order Updated successfully', '', {timeOut: 5000, positionClass: "toast-top-right"});
   											// $("#txtresponse").css('display', 'inline-block');
@@ -762,4 +762,6 @@ $(".stop").click(function(){
   			 });
 
   	 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>

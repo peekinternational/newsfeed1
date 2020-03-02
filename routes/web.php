@@ -98,10 +98,15 @@ Route::group(['prefix' => 'dashboard'], function () {
 
 	// gallery Routes
 	Route::group(['prefix' => 'gallery'], function () {
-		Route::get('/', function(){
-			return view('admin.gallery.index');
-		});
-		Route::get('/add-content', function(){
+    Route::get('/', 'Dashboard\PostController@show_gallery');
+    Route::match(['get','post'],'/add_section', 'Dashboard\PostController@gallerySectionstore');
+    Route::post('/imagegallery', 'Dashboard\PostController@galleryimagestore');
+    Route::post('/reorderUpdate', 'Dashboard\PostController@reorder_images');
+
+		// Route::get('/', function(){
+		// 	return view('admin.gallery.index');
+		// });
+		Route::get('/add-content/{id}', function(){
 			return view('admin.gallery.add-content');
 		});
 	});

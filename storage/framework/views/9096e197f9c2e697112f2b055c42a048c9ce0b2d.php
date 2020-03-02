@@ -4,10 +4,10 @@
     -->
       <div class="logo">
 
-        <a href="{{url('/dashboard')}}" class="simple-text logo-normal">
+        <a href="<?php echo e(url('/dashboard')); ?>" class="simple-text logo-normal">
           <!-- Hotel Booking -->
           <div class="logo-image-big">
-            <img src="{{asset('frontend-assets/dashboard/images/logo.svg')}}">
+            <img src="<?php echo e(asset('frontend-assets/dashboard/images/logo.svg')); ?>">
           </div>
         </a>
       </div>
@@ -16,13 +16,13 @@
 
 
           <li>
-            <a href="{{url('/dashboard')}}">
+            <a href="<?php echo e(url('/dashboard')); ?>">
               <!-- <i class="fa fa-home"></i> -->
               <p>Home</p>
             </a>
           </li>
           <li>
-            <a href="{{url('/dashboard/gallery')}}">
+            <a href="<?php echo e(url('/dashboard/gallery')); ?>">
               <!-- <i class="fa fa-home"></i> -->
               <p>Gallery</p>
             </a>
@@ -30,18 +30,18 @@
 
           <li><a href="#created_at" data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="created_at">Created at</a>
             <ul class="collapse show" id="created_at">
-              <li><a href="{{url('dashboard/posts?date=today')}}">today</a></li>
-              <li><a href="{{url('dashboard/posts?date=1 day')}}">Yesterday</a></li>
-              <li><a href="{{url('dashboard/posts?date=1 week')}}">Last week</a></li>
-              <li><a href="{{url('dashboard/posts?date=15 days')}}">Last 15 days</a></li>
-              <li><a href="{{url('dashboard/posts?date=1 month')}}">Last month</a></li>
+              <li><a href="<?php echo e(url('dashboard/posts?date=today')); ?>">today</a></li>
+              <li><a href="<?php echo e(url('dashboard/posts?date=1 day')); ?>">Yesterday</a></li>
+              <li><a href="<?php echo e(url('dashboard/posts?date=1 week')); ?>">Last week</a></li>
+              <li><a href="<?php echo e(url('dashboard/posts?date=15 days')); ?>">Last 15 days</a></li>
+              <li><a href="<?php echo e(url('dashboard/posts?date=1 month')); ?>">Last month</a></li>
             </ul>
           </li>
           <li><a href="#team" data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="team">Team</a>
             <ul class="collapse show" id="team">
-              @foreach(Feed::teams() as $team)
-              <li><a href="{{url('dashboard/team-post/'.$team->id)}}">{{$team->name}}</a></li>
-              @endforeach
+              <?php $__currentLoopData = Feed::teams(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $team): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <li><a href="<?php echo e(url('dashboard/team-post/'.$team->id)); ?>"><?php echo e($team->name); ?></a></li>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               <!-- <li><a href="">Northeast 2</a></li>
               <li><a href="">North</a></li>
               <li><a href="">SP-Capital</a></li>
@@ -53,9 +53,9 @@
           </li>
           <li><a href="#role" data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="role">Role</a>
             <ul class="collapse show" id="role">
-              @foreach(Feed::roles() as $role)
-              <li><a href="{{url('dashboard/roles-post/'.$role->id)}}">{{$role->name}}</a></li>
-              @endforeach
+              <?php $__currentLoopData = Feed::roles(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <li><a href="<?php echo e(url('dashboard/roles-post/'.$role->id)); ?>"><?php echo e($role->name); ?></a></li>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
           </li>
 

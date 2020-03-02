@@ -1,18 +1,13 @@
-@extends('admin.layouts.master')
-
-@section('style')
-<link href="{{ asset('frontend-assets/css/dropzone.css') }}" rel="stylesheet">
+<?php $__env->startSection('style'); ?>
+<link href="<?php echo e(asset('frontend-assets/css/dropzone.css')); ?>" rel="stylesheet">
 <style>
 .dropzone .dz-preview {
     margin-left: -117px;
 }
 </style>
 
-@endsection
-@section('content')
-<?php
-  $section_id = Request::segment('4');
- ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
 <div class="wrapper">
   <div class="main-panel">
     <!-- Navbar -->
@@ -26,8 +21,8 @@
             <span class="navbar-toggler-bar bar3"></span>
             </button>
           </div>
-          <h5 class="text-uppercase" class="navbar-brand" href="#pablo"><strong>New Conetnt</strong></h5><br>
-          <span class="heading-txt text-uppercase">Insert new content into gallery. You can choose between PDF, image or video file.</span>
+          <a class="text-uppercase" class="navbar-brand" href="#pablo"><strong>New Post</strong></a><br>
+          <p class="heading-txt text-uppercase pl-3">Publish news in text, image, video format or an external link</p>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -44,7 +39,7 @@
                 </p>
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="{{ url('dashboard/logout') }}">Logout</a>
+                <a class="dropdown-item" href="<?php echo e(url('dashboard/logout')); ?>">Logout</a>
               </div>
             </li>
           </ul>
@@ -68,88 +63,111 @@
                   <!-- Nav tabs -->
                   <ul class="nav nav-tabs nav-justified" role="tablist">
                     <li role="presentation" class="active">
-                      <a href="#text" aria-controls="home" role="tab" data-toggle="tab"><i class="material-icons">note_add</i><span>PDF</span> </a>
+                      <a href="#text" aria-controls="home" role="tab" data-toggle="tab"><i class="material-icons">post_add</i><span>Text</span> </a>
                     </li>
                     <li role="presentation">
-                      <a href="#image" aria-controls="image" role="tab" data-toggle="tab"> <i class="material-icons">add_photo_alternate</i><span>Image</span> </a>
+                      <a href="#image" aria-controls="image" role="tab" data-toggle="tab"> <i class="material-icons">add_photo_alternate</i><span>Image & Video</span> </a>
                     </li>
                     <li role="presentation">
-                      <a href="#external_links" aria-controls="external_links" role="tab" data-toggle="tab"> <i class="material-icons">missed_video_call</i><span>Video</span> </a>
+                      <a href="#external_links" aria-controls="external_links" role="tab" data-toggle="tab"> <i class="material-icons">open_in_new</i><span>External Link</span> </a>
                     </li>
                   </ul>
 
                   <!-- Tab panes -->
                   <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="text">
-                      <form method="post" action="" enctype="multipart/form-data"  id="TextForm">
-                      {{ csrf_field() }}
+                      <form method="post" action="" enctype="multipart/form-data">
+                      <?php echo e(csrf_field()); ?>
+
+                      <div class="form-group">
+                          <select name="team" id="textteamdata" class="form-control" required="required" onchange="textteam(this)">
+                            <option value="">Select Team</option>
+                            <?php $__currentLoopData = Feed::teams(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $team): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($team->id); ?>"><?php echo e($team->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                          </select>
+
+                      </div>
+                       <div class="form-group">
+                          <!-- <select name="role" id="input1/(\w+)/\u\1/g" class="form-control" required="required"> -->
+                          <select name="role" id="textroledata" class="form-control" required="required" onchange="textrole(this)">
+                            <option value="">Select Role</option>
+                            <?php $__currentLoopData = Feed::roles(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($role->id); ?>"><?php echo e($role->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                          </select>
+
+                      </div>
 
                         <div class="form-group">
-                          <input type="text" name="post_title" id="texttitledata" class="form-control required2" placeholder="Title" required maxlength="130" onkeyup="texttitle(this)">
-                          <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
+                          <input type="text" name="post_title" id="texttitledata" class="form-control" placeholder="Title" required maxlength="130" onkeyup="texttitle(this)">
                         </div>
-                        <div class="input-field">
-                          <label class="active">File</label>
-                        </div>
-
-                        <div class="form-group pull-left" style="margin-top: 196px;">
-                            <input type="text" name="file_name_image" class="select-img" id="file_name_image" placeholder="Insert a cover image (mandatory)">
+                        <div class="form-group">
+                         <textarea rows="100" cols="70" class="tex-editor" id="editor" name="post_description" placeholder="Description...." required></textarea>
+                       </div>
+                        <div class="form-group pull-left">
+                            <input type="text" name="" class="select-img" id="file_name" placeholder="Insert a cover image (optional)">
                             <label for="insert-cover">
                               <button class="btn btn-default image-btn">Insert</button>
-                            <input type="file" name="cover_image" id="insert-image-text" onchange="document.getElementById('file_name_image').value = this.value.split('\\').pop().split('/').pop()">
+                            <input type="file" name="cover_image" id="insert-cover" onchange="document.getElementById('file_name').value = this.value.split('\\').pop().split('/').pop()">
                             </label>
                         </div>
                         <div class="form-group pull-right">
                           <input type="submit" class="btn btn-primary background-blue" name="PUBLISH">
                         </div>
                       </form>
-                      <div class="formbody">
-                         <img src="{{asset('/frontend-assets/gif/loader.gif')}}" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
-                         <div class="form-group">
-                           <div class="row" style="display: block;flex-wrap: wrap; margin-right: -15px;margin-left: -15px;">
-                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                               <div class="dorgz" style="position: relative;height: 300px;">
-                                 <form id='frmTarget' name='dropzone' action="{{url('dashboard/imagepost')}}" class="dropzone" >{{ csrf_field() }}
-                                 </form>
-                                 <button type="button " class="btn btn-primary background-blue" id="buttonfreetext" style="float: right;margin-top: 58px;">Submit</button>
-                               </div>
-                             </div>
-                           </div>
-                         </div>
-                       </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="image">
                       <form method="post" action="" enctype="multipart/form-data" id="freelistingForm">
-                      {{ csrf_field() }}
+                      <?php echo e(csrf_field()); ?>
+
+                       <div class="form-group">
+                          <select name="team" id="imageteamdata" class="form-control required" required="required" onchange="imageteam(this)">
+                            <option value="">Select Team</option>
+                            <?php $__currentLoopData = Feed::teams(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $team): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                         <option value="<?php echo e($team->id); ?>"><?php echo e($team->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                          </select>
+                          <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
+
+                      </div>
+                       <div class="form-group">
+                          <select name="role" id="imageroledata" class="form-control required" required="required" onchange="imagerole(this)">
+                            <option value="">Select Role</option>
+                            <?php $__currentLoopData = Feed::roles(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($role->id); ?>"><?php echo e($role->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                          </select>
+                          <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
+
+                      </div>
                         <div class="form-group">
                           <input type="text" name="post_title" id="imagetitledata" class="form-control required" placeholder="Title" required maxlength="130" onkeyup="imagetitle(this)">
                           <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
                         </div>
-                        <input type="hidden" name="section_id" value="{{$section_id}}">
-
                         <div class="input-field">
-                          <label class="active">Photos</label>
+                          <label class="active">Photos & Videos</label>
 
                         </div>
                         <div class="form-group pull-left" style="margin-top: 196px;">
-                            <input type="text" name="file_name_image" class="select-img required" id="file_name_image" placeholder="Insert a cover image (mandatory)">
+                            <input type="text" name="file_name_image" class="select-img" id="file_name_image" placeholder="Insert a cover image (mandatory)">
                             <label for="insert-cover">
                               <button class="btn btn-default image-btn">Insert</button>
-                            <input type="file" name="cover_image" id="insert-image-gallery" class="required"  onchange="document.getElementById('file_name_image').value = this.value.split('\\').pop().split('/').pop()">
+                            <input type="file" name="cover_image" id="insert-image" onchange="document.getElementById('file_name_image').value = this.value.split('\\').pop().split('/').pop()">
                             </label>
-                            <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
                         </div>
 
                       </form>
                        <div class="formbody">
-                          <img src="{{asset('/frontend-assets/gif/loader.gif')}}" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
+                          <img src="<?php echo e(asset('/frontend-assets/gif/loader.gif')); ?>" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
                           <div class="form-group">
                             <div class="row" style="display: block;flex-wrap: wrap; margin-right: -15px;margin-left: -15px;">
                               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <div class="dorgz" style="position: relative;height: 300px;">
-                                  <form id='frmTarget' name='dropzone' action="{{url('dashboard/imagepost')}}" class="dropzone" >{{ csrf_field() }}
+                                  <form id='frmTarget' name='dropzone' action="<?php echo e(url('dashboard/imagepost')); ?>" class="dropzone" ><?php echo e(csrf_field()); ?>
+
                                   </form>
-                                  <button type="button " class="btn btn-primary background-blue" id="buttonfreeimage" style="float: right;margin-top: 58px;">Submit</button>
+                                  <button type="button " class="btn btn-primary background-blue" id="buttonfree" style="float: right;margin-top: 58px;">Submit</button>
                                 </div>
                               </div>
                             </div>
@@ -157,24 +175,43 @@
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="external_links">
-                      @if ($errors->any())
+                      <?php if($errors->any()): ?>
                       <div class="alert alert-danger">
                          <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                          </ul>
                       </div>
-                      @endif
-                      <form method="post" action="{{ url('dashboard/mediastore') }}" enctype="multipart/form-data">
-                      {{ csrf_field() }}
+                      <?php endif; ?>
+                      <form method="post" action="<?php echo e(url('dashboard/mediastore')); ?>" enctype="multipart/form-data">
+                      <?php echo e(csrf_field()); ?>
+
+                       <div class="form-group">
+                          <select name="team" id="linkteamdata" class="form-control" required onchange="linkteam(this)">
+                            <option value="">Select Team</option>
+                            <?php $__currentLoopData = Feed::teams(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $team): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                         <option value="<?php echo e($team->id); ?>"><?php echo e($team->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                          </select>
+
+                      </div>
+                       <div class="form-group">
+                          <select name="role" id="linkroledata" class="form-control" required onchange="linkrole(this)">
+                            <option value="">Select Role</option>
+                            <?php $__currentLoopData = Feed::roles(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($role->id); ?>"><?php echo e($role->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                          </select>
+
+                      </div>
                         <div class="form-group">
                           <input type="text" name="post_title" id="linktitledata" class="form-control" placeholder="Title" maxlength="130" onkeyup="linktitle(this)" required>
                         </div>
-                        <div class="input-field">
-                          <label class="active">Video</label>
+                        <div class="form-group">
+                          <input type="text" id="link" name="link" class="form-control" placeholder="Copy and paste the page link (URL) here" required >
                         </div>
-                        <div class="form-group pull-left" style="margin-top: 196px;">
+                        <div class="form-group pull-left">
                             <input type="text" name="" id="file_name_links" class="select-img" placeholder="Insert a cover image (optional)">
                             <label for="insert-cover">
                               <button class="btn btn-default image-btn">Insert</button>
@@ -185,20 +222,6 @@
                           <input type="submit" class="btn btn-primary background-blue" name="PUBLISH">
                         </div>
                       </form>
-                      <div class="formbody">
-                         <img src="{{asset('/frontend-assets/gif/loader.gif')}}" style="display:none; width: 13%;left: 43%;" class="loader" id="gifid">
-                         <div class="form-group">
-                           <div class="row" style="display: block;flex-wrap: wrap; margin-right: -15px;margin-left: -15px;">
-                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                               <div class="dorgz" style="position: relative;height: 300px;">
-                                 <form id='frmTarget' name='dropzone' action="{{url('dashboard/imagepost')}}" class="dropzone" >{{ csrf_field() }}
-                                 </form>
-                                 <button type="button " class="btn btn-primary background-blue" id="buttonfree" style="float: right;margin-top: 58px;">Submit</button>
-                               </div>
-                             </div>
-                           </div>
-                         </div>
-                       </div>
                     </div>
                   </div>
                 </div>
@@ -211,13 +234,13 @@
   </div>
 </div>
 
-@endsection
-@section('script')
-<script src="{{ asset('/frontend-assets/js/dropzone.js') }}"></script>
-  <script src="{{asset('frontend-assets/dashboard/ckeditor/ckeditor.js')}}"></script>
-  <script src="{{asset('frontend-assets/dashboard/ckeditor/js/sample.js')}}"></script>
-  <script src="{{asset('frontend-assets/dashboard/ckeditor/js/sf.js')}}"></script>
-<script src="{{ asset('frontend-assets/tinymce/tinymce.min.js') }}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
+<script src="<?php echo e(asset('/frontend-assets/js/dropzone.js')); ?>"></script>
+  <script src="<?php echo e(asset('frontend-assets/dashboard/ckeditor/ckeditor.js')); ?>"></script>
+  <script src="<?php echo e(asset('frontend-assets/dashboard/ckeditor/js/sample.js')); ?>"></script>
+  <script src="<?php echo e(asset('frontend-assets/dashboard/ckeditor/js/sf.js')); ?>"></script>
+<script src="<?php echo e(asset('frontend-assets/tinymce/tinymce.min.js')); ?>"></script>
 <script>
 tinymce.init({
   selector: '.tex-editor',
@@ -339,12 +362,12 @@ autoProcessQueue: false,
 acceptedFiles: ".jpg,.png,.mp4,.mkv,.avi",
 parallelUploads: 1,
 addRemoveLinks: true,
-url: "{{ url('dashboard/gallery/imagegallery')}}",
+url: "<?php echo e(url('dashboard/imagepost')); ?>",
 init: function () {
 
   var myDropzone = this;
 
-  $("#buttonfreeimage").click(function (e) {
+  $("#buttonfree").click(function (e) {
     //alert('hello');
     e.preventDefault();
     $(".asterisk").hide();
@@ -366,7 +389,7 @@ init: function () {
        for (var i=0; i<data.length; i++){
            formData.append(data[i].name, data[i].value);
        }
-       formData.append('cover_image', $('#insert-image-gallery')[0].files[0]);
+       formData.append('cover_image', $('#insert-image')[0].files[0]);
     //formData.append('userName', 'bob');
    });
     myDropzone.processQueue();
@@ -377,7 +400,7 @@ init: function () {
   this.on("complete", function (file) {
       if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
 
-        window.location.href = "{{url('/dashboard/gallery')}}";
+        window.location.href = "<?php echo e(url('/dashboard')); ?>";
 
       }
     });
@@ -391,4 +414,6 @@ init: function () {
       $(this).addClass('active');
   });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>
