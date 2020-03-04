@@ -102,6 +102,12 @@ Route::group(['prefix' => 'dashboard'], function () {
     Route::match(['get','post'],'/add_section', 'Dashboard\PostController@gallerySectionstore');
     Route::post('/imagegallery', 'Dashboard\PostController@galleryimagestore');
     Route::post('/reorderUpdate', 'Dashboard\PostController@reorder_images');
+    Route::post('/edit-content', 'Dashboard\PostController@edit_content');
+    Route::get('/delete-content/{id}', 'Dashboard\PostController@delete_content');
+    Route::post('/duplicate-section', 'Dashboard\PostController@duplicate_section');
+    Route::post('/edit-section', 'Dashboard\PostController@edit_section');
+    Route::get('/delete-section/{id}', 'Dashboard\PostController@delete_section');
+    Route::post('/search', 'Dashboard\PostController@search_gallery');
 
 		// Route::get('/', function(){
 		// 	return view('admin.gallery.index');

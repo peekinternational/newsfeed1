@@ -1330,7 +1330,7 @@ public function imagestore(Request $request)
      public function show_gallery(Request $request)
      {
        $company_id=$request->session()->get('chat_admin')->company_id;
-       $sections=DB::table('wingg_app_section')->where('company_id',$company_id)->get();
+       $sections=DB::table('wingg_app_section')->where('company_id',$company_id)->orderBy('id','asc')->get();
        // dd($sections);
        return view('admin.gallery.index',compact('sections'));
 
@@ -1367,7 +1367,7 @@ public function imagestore(Request $request)
                  $input['updated_at']=  date('Y-m-d H:i:s');
                   $image = $request->file('cover_image');
                   $file = $request->file('file');
-     //dd($image);
+                  // dd($file->getClientMimeType());
                  if ($image !="") {
                  $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
                  $destinationPath = public_path('gallery/cover');
@@ -1377,7 +1377,7 @@ public function imagestore(Request $request)
                  }
 
                  if ($file !="") {
-                 $profilePictures = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$file->getClientOriginalExtension();
+                 $profilePictures = 'file-'.time().'-'.rand(000000,999999).'.'.$file->getClientOriginalExtension();
                  $destinationPaths = public_path('gallery/images');
                  $file->move($destinationPaths, $profilePictures);
                  $imagepaths='http://phplaravel-355796-1161525.cloudwaysapps.com/gallery/images/'.$profilePictures;
@@ -1423,4 +1423,135 @@ public function imagestore(Request $request)
 
            echo $response;
          }
+
+         public function edit_content(Request $request)
+         {
+           // dd($request->all());
+           $id = $request->input('content_id');
+           $input['title']=$request->input('title');
+           $image = $request->file('cover_image');
+           if ($image !="") {
+             $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
+             $destinationPath = public_path('gallery/cover');
+             $image->move($destinationPath, $profilePicture);
+             $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/gallery/cover/'.$profilePicture;
+             $input['cover_image']=$imagepath;
+           }
+           // dd($input);
+           $post_id=DB::table('wingg_app_gallery')->where('id',$id)->update($input);
+           $request->session()->flash('post', 'Content Updated Sussessfully');
+           return redirect('/dashboard/gallery');
+         }
+
+         public function delete_content(Request $request, $id)
+         {
+           // dd($id);
+           $content = DB::table('wingg_app_gallery')->where('id',$id)->delete();
+           $request->session()->flash('post', 'Content Deleted Sussessfully');
+           return redirect('/dashboard/gallery');
+         }
+
+         public function duplicate_section(Request $request)
+         {
+           // dd($request->all());
+               $section_id=$request->input('section_id');
+               $sec_info = DB::table('wingg_app_section')->where('id',$section_id)->first();
+               $content_info = DB::table('wingg_app_gallery')->where('section_id',$section_id)->get();
+               // dd($content_info);
+               $input['title']=$request->input('section_title');
+               $input['company_id']=$sec_info->company_id;
+               $get_type = $request->input('type');
+               if ($get_type !="") {
+                 // dd($get_type);
+               $data = explode(',',$get_type);
+               $type = $data[0];
+               $id = $data[1];
+               $input['type']=$type;
+               $input['team_role_id']=$id;
+             }else {
+               $input['type']=$sec_info->type;
+               $input['team_role_id']=$sec_info->team_role_id;
+             }
+             $input['created_at']=  date('Y-m-d H:i:s');
+             $input['updated_at']=  date('Y-m-d H:i:s');
+             // dd($input);
+             $sec_id = DB::table('wingg_app_section')->insertGetId($input);
+
+             foreach ($content_info as $key => $value) {
+               $data2['section_id'] = $sec_id;
+               $data2['company_id'] = $value->company_id;
+               $data2['title'] = $value->title;
+               $data2['image'] = $value->image;
+               $data2['cover_image'] = $value->cover_image;
+               $data2['created_at']=  date('Y-m-d H:i:s');
+               $data2['updated_at']=  date('Y-m-d H:i:s');
+               $cont_id = DB::table('wingg_app_gallery')->insertGetId($data2);
+               $data3['order']=$cont_id;
+               $cont2 =DB::table('wingg_app_gallery')->where('id',$cont_id)->update($data3);
+               // dd($data2);
+             }
+           $request->session()->flash('post', 'Section Duplicated Sussessfully');
+           return redirect('/dashboard/gallery');
+         }
+
+         public function edit_section(Request $request)
+         {
+           // dd($request->all());
+           $id = $request->input('section_id');
+           $input['title']=$request->input('section_title');
+           $get_type = $request->input('type');
+           if ($get_type !="") {
+             // dd($get_type);
+           $data = explode(',',$get_type);
+           $type = $data[0];
+           $type_id = $data[1];
+           $input['type']=$type;
+           $input['team_role_id']=$type_id;
+         }
+           // dd($input);
+           $post_id=DB::table('wingg_app_section')->where('id',$id)->update($input);
+           $request->session()->flash('post', 'Section Updated Sussessfully');
+           return redirect('/dashboard/gallery');
+         }
+
+         public function delete_section(Request $request, $id)
+         {
+           // dd($id);
+           $section = DB::table('wingg_app_section')->where('id',$id)->delete();
+           $section = DB::table('wingg_app_gallery')->where('section_id',$id)->delete();
+           $request->session()->flash('post', 'Section Deleted Sussessfully');
+           return redirect('/dashboard/gallery');
+         }
+
+         public function search_gallery(Request $request)
+         {
+           // dd($request->all());
+           $keyword = $request->searchkeyword;
+           $get_type = $request->type;
+           $type='';
+           $type_id='';
+           if ($get_type !="") {
+             $data = explode(',',$get_type);
+             $type = $data[0];
+             $type_id = $data[1];
+           }
+           // dd($type.'/'.$type_id);
+           $company_id=$request->session()->get('chat_admin')->company_id;
+           $sections = DB::table('wingg_app_section')->where('wingg_app_section.company_id','=',$company_id);
+           if ($type !=null) {
+             $sections->where('wingg_app_section.type','=',$type);
+           }
+           if ($type_id !=null) {
+             $sections->where('wingg_app_section.team_role_id','=',$type_id);
+           }
+           $sections =$sections->get();
+           foreach ($sections as &$sec) {
+             $sec->gallery=DB::table('wingg_app_gallery')->where('section_id',$sec->id)->where('wingg_app_gallery.title', 'ilike', '%' . $keyword . '%')->get()->toArray();
+           }
+           return view('admin.gallery.ajaxgallery',compact('sections'));
+         }
+            // function returndup($arr)
+            // {
+            //   return array_diff_key($arr, array_unique($arr));
+            // }
 }

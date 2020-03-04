@@ -83,20 +83,23 @@
                       <?php echo e(csrf_field()); ?>
 
 
-                        <div class="form-group">
-                          <input type="text" name="post_title" id="texttitledata" class="form-control required2" placeholder="Title" required maxlength="130" onkeyup="texttitle(this)">
-                          <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
-                        </div>
+                      <div class="form-group">
+                        <input type="text" name="post_title" id="imagetitledata" class="form-control required2" placeholder="Title" required maxlength="130" onkeyup="imagetitle(this)">
+                        <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
+                      </div>
+                      <input type="hidden" name="section_id" value="<?php echo e($section_id); ?>">
+
                         <div class="input-field">
                           <label class="active">File</label>
                         </div>
 
                         <div class="form-group pull-left" style="margin-top: 196px;">
-                            <input type="text" name="file_name_image" class="select-img" id="file_name_image" placeholder="Insert a cover image (mandatory)">
+                            <input type="text" name="file_name_image" class="select-img required2" id="file_name_image" placeholder="Insert a cover image (mandatory)">
                             <label for="insert-cover">
                               <button class="btn btn-default image-btn">Insert</button>
-                            <input type="file" name="cover_image" id="insert-image" onchange="document.getElementById('file_name_image').value = this.value.split('\\').pop().split('/').pop()">
+                            <input type="file" class="required_image_text" name="cover_image" id="insert-image-text" onchange="document.getElementById('file_name_image').value = this.value.split('\\').pop().split('/').pop()">
                             </label>
+                            <span class="asterisk_image_text" style="display:none; color:#63c6bd">* Field Required</span>
                         </div>
                         <div class="form-group pull-right">
                           <input type="submit" class="btn btn-primary background-blue" name="PUBLISH">
@@ -108,10 +111,10 @@
                            <div class="row" style="display: block;flex-wrap: wrap; margin-right: -15px;margin-left: -15px;">
                              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                <div class="dorgz" style="position: relative;height: 300px;">
-                                 <form id='frmTarget' name='dropzone' action="<?php echo e(url('dashboard/imagepost')); ?>" class="dropzone" ><?php echo e(csrf_field()); ?>
+                                 <form id='frmTargetText' name='dropzone' action="<?php echo e(url('dashboard/imagepost')); ?>" class="dropzone" ><?php echo e(csrf_field()); ?>
 
                                  </form>
-                                 <button type="button " class="btn btn-primary background-blue" id="buttonfreetext" style="float: right;margin-top: 58px;">Submit</button>
+                                 <button type="button" class="btn btn-primary background-blue" id="buttonfreetext" style="float: right;margin-top: 58px;">Submit</button>
                                </div>
                              </div>
                            </div>
@@ -133,12 +136,12 @@
 
                         </div>
                         <div class="form-group pull-left" style="margin-top: 196px;">
-                            <input type="text" name="file_name_image" class="select-img required" id="file_name_image" placeholder="Insert a cover image (mandatory)">
+                            <input type="text" name="file_name_image" class="select-img" id="file_name_image" placeholder="Insert a cover image (mandatory)">
                             <label for="insert-cover">
                               <button class="btn btn-default image-btn">Insert</button>
-                            <input type="file" name="cover_image" id="insert-image-gallery" class="required"  onchange="document.getElementById('file_name_image').value = this.value.split('\\').pop().split('/').pop()">
+                            <input type="file" class="required_image" name="cover_image" id="insert-image-gallery" class="required"  onchange="document.getElementById('file_name_image').value = this.value.split('\\').pop().split('/').pop()">
                             </label>
-                            <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
+                            <span class="asterisk_image"  style="display:none; color:#63c6bd">* Field Required</span>
                         </div>
 
                       </form>
@@ -168,21 +171,24 @@
                          </ul>
                       </div>
                       <?php endif; ?>
-                      <form method="post" action="<?php echo e(url('dashboard/mediastore')); ?>" enctype="multipart/form-data">
+                      <form method="post" action="" enctype="multipart/form-data" id="VideoForm">
                       <?php echo e(csrf_field()); ?>
 
-                        <div class="form-group">
-                          <input type="text" name="post_title" id="linktitledata" class="form-control" placeholder="Title" maxlength="130" onkeyup="linktitle(this)" required>
-                        </div>
+                      <div class="form-group">
+                        <input type="text" name="post_title" id="videotitledata" class="form-control required3" placeholder="Title" required maxlength="130" onkeyup="imagetitle(this)">
+                        <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
+                      </div>
+                      <input type="hidden" name="section_id" value="<?php echo e($section_id); ?>">
                         <div class="input-field">
                           <label class="active">Video</label>
                         </div>
                         <div class="form-group pull-left" style="margin-top: 196px;">
-                            <input type="text" name="" id="file_name_links" class="select-img" placeholder="Insert a cover image (optional)">
+                            <input type="text" name="" id="file_name_links" class="select-img" placeholder="Insert a cover image (mandatory)">
                             <label for="insert-cover">
                               <button class="btn btn-default image-btn">Insert</button>
-                            <input type="file" name="cover_image" id="insert-cover" onchange="document.getElementById('file_name_links').value = this.value.split('\\').pop().split('/').pop()">
+                            <input type="file" class="required_image_video" name="cover_image" id="insert-video-cover" onchange="document.getElementById('file_name_links').value = this.value.split('\\').pop().split('/').pop()">
                             </label>
+                            <span class="asterisk_image_video"  style="display:none; color:#63c6bd">* Field Required</span>
                         </div>
                         <div class="form-group pull-right">
                           <input type="submit" class="btn btn-primary background-blue" name="PUBLISH">
@@ -194,10 +200,10 @@
                            <div class="row" style="display: block;flex-wrap: wrap; margin-right: -15px;margin-left: -15px;">
                              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                <div class="dorgz" style="position: relative;height: 300px;">
-                                 <form id='frmTarget' name='dropzone' action="<?php echo e(url('dashboard/imagepost')); ?>" class="dropzone" ><?php echo e(csrf_field()); ?>
+                                 <form id='frmTargetVideo' name='dropzone' action="<?php echo e(url('dashboard/imagepost')); ?>" class="dropzone" ><?php echo e(csrf_field()); ?>
 
                                  </form>
-                                 <button type="button " class="btn btn-primary background-blue" id="buttonfree" style="float: right;margin-top: 58px;">Submit</button>
+                                 <button type="button " class="btn btn-primary background-blue" id="buttonfreevideo" style="float: right;margin-top: 58px;">Submit</button>
                                </div>
                              </div>
                            </div>
@@ -364,6 +370,15 @@ init: function () {
     if(empty.length) return false;   //uh oh, one was empty!
     $('.right').stop().animate({scrollTop: 0}, { duration: 1500, easing: 'easeOutQuart'});
 
+    var check_empty = $('.required_image').val();
+      if (check_empty.length ==0) {
+        $(".asterisk_image").css('display','block');
+        return false;
+      }else {
+        $(".asterisk_image").css('display','none');
+
+      }
+
     var data = $('form#freelistingForm').serializeArray();
     console.log(data);
      myDropzone.on('sending', function(file, xhr, formData){
@@ -371,6 +386,129 @@ init: function () {
            formData.append(data[i].name, data[i].value);
        }
        formData.append('cover_image', $('#insert-image-gallery')[0].files[0]);
+    //formData.append('userName', 'bob');
+   });
+    myDropzone.processQueue();
+
+
+
+  });
+  this.on("complete", function (file) {
+      if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+
+        window.location.href = "<?php echo e(url('/dashboard/gallery')); ?>";
+
+      }
+    });
+
+ }
+}
+
+Dropzone.options.frmTargetText = {
+autoProcessQueue: false,
+ maxFiles: 1,
+acceptedFiles: ".pdf",
+parallelUploads: 1,
+addRemoveLinks: true,
+url: "<?php echo e(url('dashboard/gallery/imagegallery')); ?>",
+init: function () {
+
+  var myDropzone = this;
+
+  $("#buttonfreetext").click(function (e) {
+    // alert('hello');
+    e.preventDefault();
+    $(".asterisk").hide();
+    var empty = $(".required2").filter(function() { return !this.value; })
+    .next(".asterisk").show();
+    if(empty.length != 0){
+      $("#empty_error").show();
+      setTimeout(function () {
+        $("#empty_error").hide();
+      },5000);
+    }
+    // alert(empty.length);
+    if(empty.length) return false;   //uh oh, one was empty!
+    $('.right').stop().animate({scrollTop: 0}, { duration: 1500, easing: 'easeOutQuart'});
+
+    var check_empty = $('.required_image_text').val();
+      if (check_empty.length ==0) {
+        $(".asterisk_image_text").css('display','block');
+        return false;
+      }else {
+        $(".asterisk_image_text").css('display','none');
+
+      }
+
+    var data = $('form#TextForm').serializeArray();
+    console.log(data);
+     myDropzone.on('sending', function(file, xhr, formData){
+       for (var i=0; i<data.length; i++){
+           formData.append(data[i].name, data[i].value);
+       }
+       formData.append('cover_image', $('#insert-image-text')[0].files[0]);
+    //formData.append('userName', 'bob');
+   });
+    myDropzone.processQueue();
+
+
+
+  });
+  this.on("complete", function (file) {
+      if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+
+        window.location.href = "<?php echo e(url('/dashboard/gallery')); ?>";
+
+      }
+    });
+
+ }
+}
+
+
+Dropzone.options.frmTargetVideo = {
+autoProcessQueue: false,
+ maxFiles: 1,
+acceptedFiles: ".mp4,.mkv,.avi",
+parallelUploads: 1,
+addRemoveLinks: true,
+url: "<?php echo e(url('dashboard/gallery/imagegallery')); ?>",
+init: function () {
+
+  var myDropzone = this;
+
+  $("#buttonfreevideo").click(function (e) {
+    // alert('hello');
+    e.preventDefault();
+    $(".asterisk").hide();
+    var empty = $(".required3").filter(function() { return !this.value; })
+    .next(".asterisk").show();
+    if(empty.length != 0){
+      $("#empty_error").show();
+      setTimeout(function () {
+        $("#empty_error").hide();
+      },5000);
+    }
+    // alert(empty.length);
+    if(empty.length) return false;   //uh oh, one was empty!
+    $('.right').stop().animate({scrollTop: 0}, { duration: 1500, easing: 'easeOutQuart'});
+
+    var check_empty = $('.required_image_video').val();
+      if (check_empty.length ==0) {
+        $(".asterisk_image_video").css('display','block');
+        return false;
+      }else {
+        $(".asterisk_image_video").css('display','none');
+
+      }
+
+    var data = $('form#VideoForm').serializeArray();
+    console.log(data);
+     myDropzone.on('sending', function(file, xhr, formData){
+       for (var i=0; i<data.length; i++){
+           formData.append(data[i].name, data[i].value);
+       }
+       formData.append('cover_image', $('#insert-video-cover')[0].files[0]);
     //formData.append('userName', 'bob');
    });
     myDropzone.processQueue();
