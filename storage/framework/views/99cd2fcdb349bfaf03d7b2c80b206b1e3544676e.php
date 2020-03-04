@@ -307,11 +307,11 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                           <div class="">
 
                             <div id="gallery">
-                              <div id="image-container" style="width: 67%;">
+                              <div id="image-container" style="width: 100%;">
                                 <ul id="image-list" class="image-list news-slide-menu">
                                   <!-- <div class="item"> -->
                                   <?php $__currentLoopData = Feed::getgallery($section->id); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $img): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>

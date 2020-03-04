@@ -307,11 +307,11 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                           <div class="">
 
                             <div id="gallery">
-                              <div id="image-container" style="width: 67%;">
+                              <div id="image-container" style="width: 100%;">
                                 <ul id="image-list" class="image-list news-slide-menu">
                                   <!-- <div class="item"> -->
                                   @foreach(Feed::getgallery($section->id) as $img)
