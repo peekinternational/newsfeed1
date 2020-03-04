@@ -186,7 +186,7 @@ $company_id=$request->session()->get('chat_admin')->company_id;
             $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('cover/images');
             $image->move($destinationPath, $profilePicture);
-            $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/cover/images/'.$profilePicture;
+            $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePicture;
             $input['cover_image']=$imagepath;
             }
 
@@ -225,7 +225,7 @@ $company_id=$request->session()->get('chat_admin')->company_id;
         $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
         $destinationPath = public_path('cover/images');
         $image->move($destinationPath, $profilePicture);
-        $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/cover/images/'.$profilePicture;
+        $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePicture;
         $input['cover_image']=$imagepath;
         }
         // dd($input);
@@ -280,7 +280,7 @@ $company_id=$request->session()->get('chat_admin')->company_id;
         $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
         $destinationPath = public_path('cover/images');
         $image->move($destinationPath, $profilePicture);
-        $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/cover/images/'.$profilePicture;
+        $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePicture;
         $input['cover_image']=$imagepath;
         }
 
@@ -288,7 +288,7 @@ $company_id=$request->session()->get('chat_admin')->company_id;
         $profilePictures = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$file->getClientOriginalExtension();
         $destinationPaths = public_path('cover/images');
         $file->move($destinationPaths, $profilePictures);
-        $imagepaths='http://phplaravel-355796-1161525.cloudwaysapps.com/cover/images/'.$profilePictures;
+        $imagepaths='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePictures;
         $input['image_url']=$imagepaths;
         }
         // dd($input);
@@ -345,7 +345,7 @@ $company_id=$request->session()->get('chat_admin')->company_id;
         $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
         $destinationPath = public_path('cover/images');
         $image->move($destinationPath, $profilePicture);
-        $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/cover/images/'.$profilePicture;
+        $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePicture;
         $input['cover_image']=$imagepath;
         }
 
@@ -353,7 +353,7 @@ $company_id=$request->session()->get('chat_admin')->company_id;
         $profilePictures = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$file->getClientOriginalExtension();
         $destinationPaths = public_path('cover/images');
         $file->move($destinationPaths, $profilePictures);
-        $imagepaths='http://phplaravel-355796-1161525.cloudwaysapps.com/cover/images/'.$profilePictures;
+        $imagepaths='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePictures;
         $input['image_url']=$imagepaths;
         }
 
@@ -403,7 +403,7 @@ public function imagestore(Request $request)
             $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('cover/images');
             $image->move($destinationPath, $profilePicture);
-            $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/cover/images/'.$profilePicture;
+            $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePicture;
             $input['cover_image']=$imagepath;
             }
 
@@ -411,7 +411,7 @@ public function imagestore(Request $request)
             $profilePictures = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$file->getClientOriginalExtension();
             $destinationPaths = public_path('cover/images');
             $file->move($destinationPaths, $profilePictures);
-            $imagepaths='http://phplaravel-355796-1161525.cloudwaysapps.com/cover/images/'.$profilePictures;
+            $imagepaths='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePictures;
             $input['image_url']=$imagepaths;
             }
 
@@ -455,7 +455,7 @@ public function imagestore(Request $request)
             $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('cover/images');
             $image->move($destinationPath, $profilePicture);
-            $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/cover/images/'.$profilePicture;
+            $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePicture;
             $input['cover_image']=$imagepath;
             }
 
@@ -1372,7 +1372,7 @@ public function imagestore(Request $request)
                  $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
                  $destinationPath = public_path('gallery/cover');
                  $image->move($destinationPath, $profilePicture);
-                 $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/gallery/cover/'.$profilePicture;
+                 $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/gallery/cover/'.$profilePicture;
                  $input['cover_image']=$imagepath;
                  }
 
@@ -1380,7 +1380,7 @@ public function imagestore(Request $request)
                  $profilePictures = 'file-'.time().'-'.rand(000000,999999).'.'.$file->getClientOriginalExtension();
                  $destinationPaths = public_path('gallery/images');
                  $file->move($destinationPaths, $profilePictures);
-                 $imagepaths='http://phplaravel-355796-1161525.cloudwaysapps.com/gallery/images/'.$profilePictures;
+                 $imagepaths='http://phplaravel-375170-1174358.cloudwaysapps.com/gallery/images/'.$profilePictures;
                  $input['image']=$imagepaths;
                  }
                  // dd($input);
@@ -1434,7 +1434,7 @@ public function imagestore(Request $request)
              $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
              $destinationPath = public_path('gallery/cover');
              $image->move($destinationPath, $profilePicture);
-             $imagepath='http://phplaravel-355796-1161525.cloudwaysapps.com/gallery/cover/'.$profilePicture;
+             $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/gallery/cover/'.$profilePicture;
              $input['cover_image']=$imagepath;
            }
            // dd($input);
