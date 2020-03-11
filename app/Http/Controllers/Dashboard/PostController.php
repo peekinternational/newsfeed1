@@ -20,7 +20,8 @@ class PostController extends Controller
     {
       //$allcount=DB::table('wingg_app_post')->count();
 
-      // $user_id=$request->session()->get('chat_admin')->id;
+      $user_id=$request->session()->get('chat_admin')->id;
+      // dd($user_id);
       //   $posts=DB::table('wingg_app_post')->select('wingg_app_post.*','wingg_app_position.name AS p_name','wingg_app_team.name AS t_name')
       //   ->join('wingg_app_user','wingg_app_user.company_id','=','wingg_app_post.company_id')
       //   ->join('wingg_app_postteam','wingg_app_postteam.post_id','=','wingg_app_post.id')
@@ -29,6 +30,20 @@ class PostController extends Controller
       //   ->join('wingg_app_position','wingg_app_position.id','=','wingg_app_postposition.position_id')
       //   ->where('wingg_app_user.id','=',$user_id)->orderby('wingg_app_post.created_at','desc')->paginate(10);
       //  $usercount=$posts->count();
+      // $company_id=$request->session()->get('chat_admin')->company_id;
+      //       // dd($get_date .'/'. $getcurrentday);
+      //        $posts=DB::table('wingg_app_post')->select('wingg_app_post.*','wingg_app_position.name AS p_name','wingg_app_team.name AS t_name')
+      //        ->join('wingg_app_postteam','wingg_app_postteam.post_id','=','wingg_app_post.id')
+      //        ->join('wingg_app_postposition','wingg_app_postposition.post_id','=','wingg_app_post.id')
+      //        ->join('wingg_app_team','wingg_app_team.id','=','wingg_app_postteam.team_id')
+      //        ->join('wingg_app_position','wingg_app_position.id','=','wingg_app_postposition.position_id')
+      //        ->where('wingg_app_post.company_id','=',$company_id)->where('wingg_app_post.id','<',36858)->get();
+      //        // dd($posts);
+      //        foreach ($posts as &$post) {
+      //          DB::table('wingg_app_postteam')->where('post_id',$post->id)->delete();
+      //          DB::table('wingg_app_postposition')->where('post_id',$post->id)->delete();
+      //          DB::table('wingg_app_post')->where('id',$post->id)->delete();
+      //        }
         return view('admin.news');
     }
 
@@ -1358,12 +1373,24 @@ public function imagestore(Request $request)
      public function show_gallery(Request $request)
      {
        $get_type = $request->input('type');
+       $main_type='';
+       $main_id='';
+       if ($get_type !="") {
        $data = explode(',',$get_type);
        $main_type = $data[0];
        $main_id = $data[1];
+      }
+
        // dd($type.'/'.$id);
        $company_id=$request->session()->get('chat_admin')->company_id;
-       $sections=DB::table('wingg_app_section')->where('company_id',$company_id)->where('type',$main_type)->where('team_role_id',$main_id)->orderBy('id','asc')->get();
+       $sections=DB::table('wingg_app_section')->where('company_id',$company_id);
+       if ($main_type !='') {
+        $sections->where('type',$main_type);
+       }
+       if ($main_id !='') {
+        $sections->where('team_role_id',$main_id);
+       }
+      $sections=$sections->orderBy('id','asc')->get();
        // dd($sections);
        return view('admin.gallery.index',compact('sections','main_type','main_id'));
 
