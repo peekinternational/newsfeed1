@@ -22,7 +22,7 @@
             </a>
           </li>
           <li>
-            <a href="<?php echo e(url('/dashboard/gallery')); ?>">
+            <a href="<?php echo e(url('/dashboard/gallery/index')); ?>">
               <!-- <i class="fa fa-home"></i> -->
               <p>Gallery</p>
             </a>

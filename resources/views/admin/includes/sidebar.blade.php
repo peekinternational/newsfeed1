@@ -22,7 +22,7 @@
             </a>
           </li>
           <li>
-            <a href="{{url('/dashboard/gallery')}}">
+            <a href="{{url('/dashboard/gallery/index')}}">
               <!-- <i class="fa fa-home"></i> -->
               <p>Gallery</p>
             </a>
