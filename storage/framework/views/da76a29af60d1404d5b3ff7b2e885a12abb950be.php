@@ -72,7 +72,7 @@
                       <a href="#image" aria-controls="image" role="tab" data-toggle="tab"> <i class="material-icons">add_photo_alternate</i><span>Image</span> </a>
                     </li>
                     <li role="presentation">
-                      <a href="#external_links" aria-controls="external_links" role="tab" data-toggle="tab"> <i class="material-icons">missed_video_call</i><span>Video</span> </a>
+                      <a href="#external_links" aria-controls="external_links" role="tab" data-toggle="tab"> <i class="material-icons">video_call</i><span>Video</span> </a>
                     </li>
                   </ul>
 

@@ -170,6 +170,11 @@ button, input, optgroup, select, textarea {
 	background: #63c6bd;
   padding: 15.5px;
 }
+.ptpb-2 {
+  padding-bottom: 2rem!important;
+  padding-top: 2.3rem!important;
+}
+
 @media only screen and (max-width: 768px) {
   .card {
     width: 100% !important;

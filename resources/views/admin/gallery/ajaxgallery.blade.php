@@ -5,13 +5,14 @@
   <div class="col-md-10">
     <div class="row">
 
-    <div class="col-md-2" style="margin-top:10px">
-      <div class="item text-center h-105" style="width:60%;">
-        <div class="rounded border border-white h-100 overflow-hidden bg-secondary py-4">
-          <a href="{{url('dashboard/gallery/add-content/'.$section->id)}}"><i class="fa fa-plus-circle fa-2x text-white mt-2"></i></a>
+      <div class="col-md-2" style="margin-top:10px">
+        <div class="item text-center h-105" style="width:51%;">
+          <div class="rounded overflow-hidden bg-secondary ptpb-2" style="border: 2px solid white;background-color: #5f5d5d !important;">
+            <!-- <a href="{{url('dashboard/gallery/add-content/'.$section->id)}}"><i class="fa fa-plus-circle fa-2x text-white mt-2"></i></a> -->
+            <a href="{{url('dashboard/gallery/add-content/'.$section->id)}}"><i class="material-icons text-white" style="font-size: 28px;">add_circle</i></a>
+          </div>
         </div>
       </div>
-    </div>
     <div class="col-md-10">
     <div class="">
 
@@ -125,7 +126,7 @@
   </div>
   </div>
   <div class="col-md-2">
-    <div class="action">
+    <div class="action" style="display:inline-grid;">
       <a href="" style="padding-right: 3px;" data-toggle="modal" data-target="#EditSectionModal-{{$section->id}}"><i class="material-icons" style="color:gray">edit</i></a>
       <a href="" data-toggle="modal" data-target="#duplicate_section-{{$section->id}}"><i class="material-icons" style="color:gray">library_add</i></a>
       <a href="" data-toggle="modal" data-target="#deleteSectoinModal-{{$section->id}}" style="padding-right: 3px;"> <i class="material-icons" style="color:gray">delete</i> </a>

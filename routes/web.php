@@ -98,6 +98,7 @@ Route::group(['prefix' => 'dashboard'], function () {
 
 	// gallery Routes
 	Route::group(['prefix' => 'gallery'], function () {
+    Route::get('/index', 'Dashboard\PostController@show_gallery_index');
     Route::get('/', 'Dashboard\PostController@show_gallery');
     Route::match(['get','post'],'/add_section', 'Dashboard\PostController@gallerySectionstore');
     Route::post('/imagegallery', 'Dashboard\PostController@galleryimagestore');

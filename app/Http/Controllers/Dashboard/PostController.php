@@ -109,8 +109,8 @@ $company_id=$request->session()->get('chat_admin')->company_id;
            foreach($posts as $post)
            {
              $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-             if($post->cover_image){
-                 $cover_image=$post->cover_image;
+             if($post->image_url){
+                 $cover_image=$post->image_url;
              }else{
                $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
              }
@@ -122,12 +122,14 @@ $company_id=$request->session()->get('chat_admin')->company_id;
 
            $output .= '<tr>';
              $output .= '<td class="action-btn" style="width: 9%;">';
-               if($post->content){
+               if($post->media_type == 'text'){
                $output .= '<a href="'.$text_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-               }elseif($post->image_url){
+               }elseif($post->media_type == 'video/pdf'){
                $output .= '<a href="'.$image_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-               }else{
+               }elseif($post->media_type == 'link'){
                $output .= '<a href="'.$link_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
+               }else {
+                 $output .= '<a href="" style="color:gray;"><i class="material-icons">edit</i></a>';
                }
                $output .= '<a href="'.$delete_url.'" class="demo" style="color:gray;"><i class="material-icons">delete</i></a>';
                $output .= '<a href="" style="color:gray"><i class="material-icons">visibility</i></a>';
@@ -171,13 +173,14 @@ $company_id=$request->session()->get('chat_admin')->company_id;
     public function store(Request $request)
     {
         if($request->isMethod('post')){
-           //dd($request->input());
+           // dd($request->all());
         $company_id=$request->session()->get('chat_admin')->company_id;
             $input['title']=$request->input('post_title');
             $input['content']=$request->input('post_description');
             $input['company_id']=$company_id;
             $input['dislikes']=0;
             $input['likes']=0;
+            $input['media_type']='text';
             $input['created_at']=  date('Y-m-d H:i:s');
             $input['updated_at']=  date('Y-m-d H:i:s');
              $image = $request->file('cover_image');
@@ -185,11 +188,11 @@ $company_id=$request->session()->get('chat_admin')->company_id;
             if ($image !="") {
             $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('cover/images');
+            // dd($destinationPath);
             $image->move($destinationPath, $profilePicture);
             $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePicture;
-            $input['cover_image']=$imagepath;
+            $input['image_url']=$imagepath;
             }
-
            $post_id=DB::table('wingg_app_post')->insertGetId( $input);
 
            $team['team_id']=$request->input('team');
@@ -394,6 +397,7 @@ public function imagestore(Request $request)
             $input['company_id']=$company_id;
             $input['dislikes']=0;
             $input['likes']=0;
+            $input['media_type']='video/pdf';
             $input['created_at']=  date('Y-m-d H:i:s');
             $input['updated_at']=  date('Y-m-d H:i:s');
              $image = $request->file('cover_image');
@@ -404,7 +408,7 @@ public function imagestore(Request $request)
             $destinationPath = public_path('cover/images');
             $image->move($destinationPath, $profilePicture);
             $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePicture;
-            $input['cover_image']=$imagepath;
+            $input['image_url']=$imagepath;
             }
 
             if ($file !="") {
@@ -412,7 +416,7 @@ public function imagestore(Request $request)
             $destinationPaths = public_path('cover/images');
             $file->move($destinationPaths, $profilePictures);
             $imagepaths='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePictures;
-            $input['image_url']=$imagepaths;
+            $input['media_url']=$imagepaths;
             }
 
            $post_id=DB::table('wingg_app_post')->insertGetId( $input);
@@ -447,6 +451,7 @@ public function imagestore(Request $request)
             $input['company_id']=$company_id;
             $input['dislikes']=0;
             $input['likes']=0;
+            $input['media_type']='link';
             $input['created_at']=  date('Y-m-d H:i:s');
             $input['updated_at']=  date('Y-m-d H:i:s');
              $image = $request->file('cover_image');
@@ -456,7 +461,7 @@ public function imagestore(Request $request)
             $destinationPath = public_path('cover/images');
             $image->move($destinationPath, $profilePicture);
             $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/cover/images/'.$profilePicture;
-            $input['cover_image']=$imagepath;
+            $input['image_url']=$imagepath;
             }
 
            $post_id=DB::table('wingg_app_post')->insertGetId( $input);
@@ -560,8 +565,8 @@ public function imagestore(Request $request)
             foreach($posts as $post)
             {
               $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-              if($post->cover_image){
-                  $cover_image=$post->cover_image;
+              if($post->image_url){
+                  $cover_image=$post->image_url;
               }else{
                 $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
               }
@@ -573,12 +578,14 @@ public function imagestore(Request $request)
 
             $output .= '<tr>';
               $output .= '<td class="action-btn" style="width: 9%;">';
-                if($post->content){
+                if($post->media_type == 'text'){
                 $output .= '<a href="'.$text_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }elseif($post->image_url){
+                }elseif($post->media_type == 'video/pdf'){
                 $output .= '<a href="'.$image_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }else{
+                }elseif($post->media_type == 'link'){
                 $output .= '<a href="'.$link_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
+                }else {
+                  $output .= '<a href="" style="color:gray;"><i class="material-icons">edit</i></a>';
                 }
                 $output .= '<a href="'.$delete_url.'" class="demo" style="color:gray;"><i class="material-icons">delete</i></a>';
                 $output .= '<a href="" style="color:gray"><i class="material-icons">visibility</i></a>';
@@ -648,8 +655,8 @@ public function imagestore(Request $request)
             foreach($posts as $post)
             {
               $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-              if($post->cover_image){
-                  $cover_image=$post->cover_image;
+              if($post->image_url){
+                  $cover_image=$post->image_url;
               }else{
                 $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
               }
@@ -661,12 +668,14 @@ public function imagestore(Request $request)
 
             $output .= '<tr>';
               $output .= '<td class="action-btn" style="width: 9%;">';
-                if($post->content){
+                if($post->media_type == 'text'){
                 $output .= '<a href="'.$text_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }elseif($post->image_url){
+                }elseif($post->media_type == 'video/pdf'){
                 $output .= '<a href="'.$image_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }else{
+                }elseif($post->media_type == 'link'){
                 $output .= '<a href="'.$link_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
+                }else {
+                  $output .= '<a href="" style="color:gray;"><i class="material-icons">edit</i></a>';
                 }
                 $output .= '<a href="'.$delete_url.'" class="demo" style="color:gray;"><i class="material-icons">delete</i></a>';
                 $output .= '<a href="" style="color:gray"><i class="material-icons">visibility</i></a>';
@@ -768,8 +777,8 @@ public function imagestore(Request $request)
             foreach($posts as $post)
             {
               $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-              if($post->cover_image){
-                  $cover_image=$post->cover_image;
+              if($post->image_url){
+                  $cover_image=$post->image_url;
               }else{
                 $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
               }
@@ -781,12 +790,14 @@ public function imagestore(Request $request)
 
             $output .= '<tr>';
               $output .= '<td class="action-btn" style="width: 9%;">';
-                if($post->content){
+                if($post->media_type == 'text'){
                 $output .= '<a href="'.$text_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }elseif($post->image_url){
+                }elseif($post->media_type == 'video/pdf'){
                 $output .= '<a href="'.$image_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }else{
+                }elseif($post->media_type == 'link'){
                 $output .= '<a href="'.$link_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
+                }else {
+                  $output .= '<a href="" style="color:gray;"><i class="material-icons">edit</i></a>';
                 }
                 $output .= '<a href="'.$delete_url.'" class="demo" style="color:gray;"><i class="material-icons">delete</i></a>';
                 $output .= '<a href="" style="color:gray"><i class="material-icons">visibility</i></a>';
@@ -889,8 +900,8 @@ public function imagestore(Request $request)
             foreach($posts as $post)
             {
               $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-              if($post->cover_image){
-                  $cover_image=$post->cover_image;
+              if($post->image_url){
+                  $cover_image=$post->image_url;
               }else{
                 $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
               }
@@ -902,12 +913,14 @@ public function imagestore(Request $request)
 
             $output .= '<tr>';
               $output .= '<td class="action-btn" style="width: 9%;">';
-                if($post->content){
+                if($post->media_type == 'text'){
                 $output .= '<a href="'.$text_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }elseif($post->image_url){
+                }elseif($post->media_type == 'video/pdf'){
                 $output .= '<a href="'.$image_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }else{
+                }elseif($post->media_type == 'link'){
                 $output .= '<a href="'.$link_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
+                }else {
+                  $output .= '<a href="" style="color:gray;"><i class="material-icons">edit</i></a>';
                 }
                 $output .= '<a href="'.$delete_url.'" class="demo" style="color:gray;"><i class="material-icons">delete</i></a>';
                 $output .= '<a href="" style="color:gray"><i class="material-icons">visibility</i></a>';
@@ -1009,8 +1022,8 @@ public function imagestore(Request $request)
             foreach($posts as $post)
             {
               $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-              if($post->cover_image){
-                  $cover_image=$post->cover_image;
+              if($post->image_url){
+                  $cover_image=$post->image_url;
               }else{
                 $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
               }
@@ -1022,12 +1035,14 @@ public function imagestore(Request $request)
 
             $output .= '<tr>';
               $output .= '<td class="action-btn" style="width: 9%;">';
-                if($post->content){
+                if($post->media_type == 'text'){
                 $output .= '<a href="'.$text_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }elseif($post->image_url){
+                }elseif($post->media_type == 'video/pdf'){
                 $output .= '<a href="'.$image_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                }else{
+                }elseif($post->media_type == 'link'){
                 $output .= '<a href="'.$link_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
+                }else {
+                  $output .= '<a href="" style="color:gray;"><i class="material-icons">edit</i></a>';
                 }
                 $output .= '<a href="'.$delete_url.'" class="demo" style="color:gray;"><i class="material-icons">delete</i></a>';
                 $output .= '<a href="" style="color:gray"><i class="material-icons">visibility</i></a>';
@@ -1180,8 +1195,8 @@ public function imagestore(Request $request)
               foreach($posts as $post)
               {
                 $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-                if($post->cover_image){
-                    $cover_image=$post->cover_image;
+                if($post->image_url){
+                    $cover_image=$post->image_url;
                 }else{
                   $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
                 }
@@ -1193,12 +1208,14 @@ public function imagestore(Request $request)
 
               $output .= '<tr>';
                 $output .= '<td class="action-btn" style="width: 9%;">';
-                  if($post->content){
+                  if($post->media_type == 'text'){
                   $output .= '<a href="'.$text_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                  }elseif($post->image_url){
+                  }elseif($post->media_type == 'video/pdf'){
                   $output .= '<a href="'.$image_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                  }else{
+                  }elseif($post->media_type == 'link'){
                   $output .= '<a href="'.$link_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
+                  }else {
+                    $output .= '<a href="" style="color:gray;"><i class="material-icons">edit</i></a>';
                   }
                   $output .= '<a href="'.$delete_url.'" class="demo" style="color:gray;"><i class="material-icons">delete</i></a>';
                   $output .= '<a href="" style="color:gray"><i class="material-icons">visibility</i></a>';
@@ -1278,8 +1295,8 @@ public function imagestore(Request $request)
              foreach($posts as $post)
              {
                $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-               if($post->cover_image){
-                   $cover_image=$post->cover_image;
+               if($post->image_url){
+                   $cover_image=$post->image_url;
                }else{
                  $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
                }
@@ -1291,12 +1308,14 @@ public function imagestore(Request $request)
 
              $output .= '<tr>';
                $output .= '<td class="action-btn" style="width: 9%;">';
-                 if($post->content){
+                 if($post->media_type == 'text'){
                  $output .= '<a href="'.$text_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                 }elseif($post->image_url){
+                 }elseif($post->media_type == 'video/pdf'){
                  $output .= '<a href="'.$image_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
-                 }else{
+                 }elseif($post->media_type == 'link'){
                  $output .= '<a href="'.$link_url.'" style="color:gray;"><i class="material-icons">edit</i></a>';
+                 }else {
+                   $output .= '<a href="" style="color:gray;"><i class="material-icons">edit</i></a>';
                  }
                  $output .= '<a href="'.$delete_url.'" class="demo" style="color:gray;"><i class="material-icons">delete</i></a>';
                  $output .= '<a href="" style="color:gray"><i class="material-icons">visibility</i></a>';
@@ -1327,12 +1346,26 @@ public function imagestore(Request $request)
          echo json_encode($x);
      }
 
-     public function show_gallery(Request $request)
+
+     public function show_gallery_index(Request $request)
      {
        $company_id=$request->session()->get('chat_admin')->company_id;
        $sections=DB::table('wingg_app_section')->where('company_id',$company_id)->orderBy('id','asc')->get();
        // dd($sections);
-       return view('admin.gallery.index',compact('sections'));
+       return view('admin.gallery.gallery-index',compact('sections'));
+
+     }
+     public function show_gallery(Request $request)
+     {
+       $get_type = $request->input('type');
+       $data = explode(',',$get_type);
+       $main_type = $data[0];
+       $main_id = $data[1];
+       // dd($type.'/'.$id);
+       $company_id=$request->session()->get('chat_admin')->company_id;
+       $sections=DB::table('wingg_app_section')->where('company_id',$company_id)->where('type',$main_type)->where('team_role_id',$main_id)->orderBy('id','asc')->get();
+       // dd($sections);
+       return view('admin.gallery.index',compact('sections','main_type','main_id'));
 
      }
      public function gallerySectionstore(Request $request)

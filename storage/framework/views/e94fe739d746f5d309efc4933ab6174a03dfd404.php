@@ -66,7 +66,7 @@
                       <a href="#text" aria-controls="home" role="tab" data-toggle="tab"><i class="material-icons">post_add</i><span>Text</span> </a>
                     </li>
                     <li role="presentation">
-                      <a href="#image" aria-controls="image" role="tab" data-toggle="tab"> <i class="material-icons">add_photo_alternate</i><span>Image & Video</span> </a>
+                      <a href="#image" aria-controls="image" role="tab" data-toggle="tab"> <i class="material-icons">add_photo_alternate</i><span>PDF & Video</span> </a>
                     </li>
                     <li role="presentation">
                       <a href="#external_links" aria-controls="external_links" role="tab" data-toggle="tab"> <i class="material-icons">open_in_new</i><span>External Link</span> </a>
@@ -359,7 +359,7 @@ function linktitle(data){
 Dropzone.options.frmTarget = {
 autoProcessQueue: false,
  maxFiles: 1,
-acceptedFiles: ".jpg,.png,.mp4,.mkv,.avi",
+acceptedFiles: ".pdf,.mp4,.mkv,.avi",
 parallelUploads: 1,
 addRemoveLinks: true,
 url: "<?php echo e(url('dashboard/imagepost')); ?>",

@@ -108,9 +108,12 @@
         width: 4px;
     }
     ::-webkit-scrollbar-thumb:horizontal{
-        background: gray;
+        background: #cecece;
         border-radius: 10px;
     }
+.main-panel>.content {
+  padding-top: 20px !important;
+}
 </style>
 
 <?php $__env->stopSection(); ?>
@@ -120,7 +123,7 @@
     <div class="main-panel">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-        <div class="container-fluid">
+        <div class="container-fluid" style="marin-top:15px;">
           <div class="navbar-wrapper">
             <div class="navbar-toggle">
               <button type="button" class="navbar-toggler">
@@ -140,8 +143,8 @@
 
             <ul class="navbar-nav">
               <li>
-                <a href="<?php echo e(url('dashboard/allcsv')); ?>" class="btn top-btn csv-btn" disabled>Download <br> CSV</a>
-                <a href="" class="btn btn-primary top-btn new-btn" id="top_btn" data-toggle="modal" data-target="#create_section" style="background: #63c6bd;" disabled>New Section</a>
+                <a href="<?php echo e(url('dashboard/allcsv')); ?>" class="btn top-btn csv-btn">Download <br> CSV</a>
+                <a href="" class="btn btn-primary top-btn new-btn" id="top_btn" data-toggle="modal" data-target="#create_section" style="background: #63c6bd;">New Section</a>
               </li>
               <li class="nav-item btn-rotate dropdown">
                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -178,15 +181,38 @@
 
                   </div> -->
                   <div class="form-group">
-                    <select class="form-control border-gray" id="main_select" placeholder="" style="width:300px;">
+                    <select class="form-control border-gray" id="main_select" placeholder="" style="width:300px;" onchange="gettype(this);">
                       <option disabled selected hidden>Roles/Teams</option>
                       <option disabled value="" style="font-weight: 700;">Teams</option>
                       <?php $__currentLoopData = Feed::teams(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $team): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                      <option value="team,<?php echo e($team->id); ?>"><?php echo e($team->name); ?></option>
+                      <?php
+                      $type3 ='';
+                      if('team,'.$team->id === $main_type.','.$main_id){
+                        $type3 = 'yes';
+                      }else{
+                        $type3 = 'no';
+                      }
+
+                      ?>
+
+                      <option value="team,<?php echo e($team->id); ?>" <?php echo e($type3 == 'yes' ? 'selected="selected"' : ''); ?>><?php echo e($team->name); ?></option>
+
+                      <!-- <option value="team,<?php echo e($team->id); ?>"><?php echo e($team->name); ?></option> -->
                       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                       <option disabled value="" style="font-weight: 700;">Roles</option>
                       <?php $__currentLoopData = Feed::roles(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                      <option value="role,<?php echo e($role->id); ?>"><?php echo e($role->name); ?></option>
+                      <?php
+                      $type4 ='';
+                      if('role,'.$role->id === $main_type.','.$main_id){
+                        $type4 = 'yes';
+                      }else{
+                        $type4 = 'no';
+                      }
+
+                      ?>
+                      <option value="role,<?php echo e($role->id); ?>" <?php echo e($type4 == 'yes' ? 'selected="selected"' : ''); ?>><?php echo e($role->name); ?></option>
+
+                      <!-- <option value="role,<?php echo e($role->id); ?>"><?php echo e($role->name); ?></option> -->
                       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                   </div>
@@ -301,9 +327,10 @@
                       <div class="row">
 
                         <div class="col-md-2" style="margin-top:10px">
-                          <div class="item text-center h-105" style="width:60%;">
-                            <div class="rounded border border-white h-100 overflow-hidden bg-secondary py-4">
-                              <a href="<?php echo e(url('dashboard/gallery/add-content/'.$section->id)); ?>"><i class="fa fa-plus-circle fa-2x text-white mt-2"></i></a>
+                          <div class="item text-center h-105" style="width:51%;">
+                            <div class="rounded overflow-hidden bg-secondary ptpb-2" style="border: 2px solid white;background-color: #5f5d5d !important;">
+                              <!-- <a href="<?php echo e(url('dashboard/gallery/add-content/'.$section->id)); ?>"><i class="fa fa-plus-circle fa-2x text-white mt-2"></i></a> -->
+                              <a href="<?php echo e(url('dashboard/gallery/add-content/'.$section->id)); ?>"><i class="material-icons text-white" style="font-size: 28px;">add_circle</i></a>
                             </div>
                           </div>
                         </div>
@@ -445,7 +472,7 @@
       </div>
     </div>
     <div class="col-md-2">
-      <div class="action">
+      <div class="action" style="display:inline-grid;">
         <a href="" style="padding-right: 3px;" data-toggle="modal" data-target="#EditSectionModal-<?php echo e($section->id); ?>"><i class="material-icons" style="color:gray">edit</i></a>
         <a href="" data-toggle="modal" data-target="#duplicate_section-<?php echo e($section->id); ?>"><i class="material-icons" style="color:gray">library_add</i></a>
         <a href="" data-toggle="modal" data-target="#deleteSectoinModal-<?php echo e($section->id); ?>" style="padding-right: 3px;"> <i class="material-icons" style="color:gray">delete</i> </a>
@@ -832,6 +859,29 @@ $(".stop").click(function(){
             });
       }
 
+      function gettype(data){
+       var type =data.value;
+       // alert(type);
+       var searchkeyword =$('#keyword').val();
+       // alert(date);
+        $.ajax({
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'post',
+                data: {
+                  searchkeyword: searchkeyword,type:type
+                  },
+                // url: "<?php echo e(url('dashboard/teamsearch/')); ?>/"+id,
+                url: "<?php echo e(url('/dashboard/gallery/search')); ?>",
+               success: function (response) {
+            $('#showresponce').html(response);
+
+              }
+
+           });
+      }
+
     // Add Menu through ajax
     $("#create_section_btn").on('click', function (e) {
     	// alert('hello');
@@ -873,6 +923,8 @@ $(".stop").click(function(){
     	});
     	//return false;
     });
+
+
 
   </script>
   <script>
