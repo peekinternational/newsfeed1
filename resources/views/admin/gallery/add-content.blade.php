@@ -6,6 +6,12 @@
 .dropzone .dz-preview {
     margin-left: -117px;
 }
+.nav-tabs.nav-justified > li > a {
+  text-align: center !important;
+}
+.nav-tabs.nav-justified > li.active > a {
+  text-align: center !important;
+}
 </style>
 
 @endsection
@@ -89,6 +95,7 @@
                         <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
                       </div>
                       <input type="hidden" name="section_id" value="{{$section_id}}">
+                      <input type="hidden" name="media_type" value="pdf">
 
                         <div class="input-field">
                           <label class="active">File</label>
@@ -129,6 +136,7 @@
                           <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
                         </div>
                         <input type="hidden" name="section_id" value="{{$section_id}}">
+                        <input type="hidden" name="media_type" value="img">
 
                         <div class="input-field">
                           <label class="active">Photos</label>
@@ -176,6 +184,7 @@
                         <span class="asterisk"  style="display:none; color:#63c6bd">* Field Required</span>
                       </div>
                       <input type="hidden" name="section_id" value="{{$section_id}}">
+                      <input type="hidden" name="media_type" value="vid">
                         <div class="input-field">
                           <label class="active">Video</label>
                         </div>
@@ -450,13 +459,13 @@ init: function () {
 
 
   });
-  this.on("complete", function (file) {
-      if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-
-        window.location.href = "{{url('/dashboard/gallery')}}";
-
-      }
-    });
+  // this.on("complete", function (file) {
+  //     if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+  //
+  //       window.location.href = "{{url('/dashboard/gallery')}}";
+  //
+  //     }
+  //   });
 
  }
 }

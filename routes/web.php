@@ -109,6 +109,7 @@ Route::group(['prefix' => 'dashboard'], function () {
     Route::post('/edit-section', 'Dashboard\PostController@edit_section');
     Route::get('/delete-section/{id}', 'Dashboard\PostController@delete_section');
     Route::post('/search', 'Dashboard\PostController@search_gallery');
+    Route::post('/sectionReorder', 'Dashboard\PostController@sectionReorder');
 
 		// Route::get('/', function(){
 		// 	return view('admin.gallery.index');

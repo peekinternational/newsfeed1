@@ -22,9 +22,15 @@ class Feed {
     }
     public function getgallery($id){
 
-      $company_id=Session::get('chat_admin')->company_id;
-      $image= DB::table('wingg_app_gallery')->where('company_id',$company_id)->where('section_id',$id)->get();
+      // $company_id=Session::get('chat_admin')->company_id;
+      $image= DB::table('wingg_app_content')->where('contenttag_id',$id)->get();
        return $image;
    }
+   public function sections(){
+
+        $company_id=Session::get('chat_admin')->company_id;
+        $section= DB::table('wingg_app_contenttag')->where('company_id',$company_id)->get();
+         return $section;
+     }
 }
 ?>

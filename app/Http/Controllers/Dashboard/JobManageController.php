@@ -14,8 +14,8 @@ class JobManageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-	 
-	 
+
+
     public function index()
     {
        $alljobs = DB::table('wingg_app_user')->get();
@@ -52,7 +52,7 @@ class JobManageController extends Controller
                         "email=$email&password=$password");
 
             // In real life you should use something like:
-            // curl_setopt($ch, CURLOPT_POSTFIELDS, 
+            // curl_setopt($ch, CURLOPT_POSTFIELDS,
             //          http_build_query(array('postvar1' => 'value1')));
 
             // Receive server response ...
@@ -62,6 +62,7 @@ class JobManageController extends Controller
 
             curl_close ($ch);
               $auth=json_decode($server_output);
+							// dd($auth);
               try {
              $user = DB::table('wingg_app_user')->where('id', $auth->user_id)->first();
 				$request->session()->put('chat_admin', $user);
@@ -87,7 +88,7 @@ class JobManageController extends Controller
 			// }
 			// else{
                // dd($auth);
-                
+
 
 			//}
 

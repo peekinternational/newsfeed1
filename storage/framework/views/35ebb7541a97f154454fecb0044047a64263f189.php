@@ -1,7 +1,7 @@
 <?php $__currentLoopData = $sections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $section): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <?php if(count($section->gallery) !=0): ?>
 <div class="row justify-content-center border-bottom border-secondary">
-  <h4 class="w-100 px-3 pt-2"><?php echo e($section->title); ?></h4>
+  <h4 class="w-100 px-3 pt-2"><?php echo e($section->name); ?></h4>
   <div class="col-md-10">
     <div class="row">
 
@@ -25,8 +25,8 @@
               <?php
               // print_r($img->cover_image); die;
               $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
-              if($img->cover_image){
-                $cover_image=$img->cover_image;
+              if($img->thumbnail){
+                $cover_image=$img->thumbnail;
               }else{
                 $cover_image=url('frontend-assets/dashboard/img/faces/abc1.jpg');
               }
@@ -66,10 +66,11 @@
                    <input type="text" name="" class="select-img" id="file_name" placeholder="Insert a cover image">
                    <label for="insert-cover">
                      <button class="btn btn-default image-btn">Insert</button>
-                   <input type="file" name="cover_image" id="insert-cover" onchange="document.getElementById('file_name').value = this.value.split('\\').pop().split('/').pop()">
+                     <input type="file" name="cover_image" id="insert-cover" onchange="document.getElementById('file_name').value = this.value.split('\\').pop().split('/').pop()">
                    </label>
                  </div>
                  <input type="hidden" name="content_id" value="<?php echo e($img->id); ?>">
+
                  <div class="form-group">
                    <div class="row">
                      <div class="col-md-8">
@@ -81,7 +82,49 @@
                    </div>
                  </div>
                  <div class="form-group">
+                   <div class="row">
+                     <div class="col-md-8">
+                       <select class="c-select form-control" name="type" required>
+                         <!-- <option selected disabled hidden="">Teams/Role</option> -->
+                         <option disabled value="" style="font-weight: 700;">Teams</option>
+                         <?php $__currentLoopData = Feed::teams(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $team): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                         <?php
+                         $type ='';
+                         if('team,'.$team->id === $img->type.','.$img->team_role_id){
+                           $type = 'yes';
+                         }else{
+                           $type = 'no';
+                         }
+                         ?>
+                         <option value="team,<?php echo e($team->id); ?>" <?php echo e($type == 'yes' ? 'selected="selected"' : ''); ?>><?php echo e($team->name); ?></option>
+                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                         <option disabled value="" style="font-weight: 700;">Roles</option>
+                         <?php $__currentLoopData = Feed::roles(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                         <?php
+                         $type2 ='';
+                         if('role,'.$role->id === $img->type.','.$img->team_role_id){
+                           $type2 = 'yes';
+                         }else{
+                           $type2 = 'no';
+                         }
 
+                         ?>
+                         <option value="role,<?php echo e($role->id); ?>" <?php echo e($type2 == 'yes' ? 'selected="selected"' : ''); ?>><?php echo e($role->name); ?></option>
+                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                       </select>
+                     </div>
+                   </div>
+                 </div>
+                 <div class="form-group">
+                   <div class="row">
+                     <div class="col-md-8">
+                       <select class="c-select form-control" name="section" required>
+                         <?php $__currentLoopData = Feed::sections(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sec): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                         <option value="<?php echo e($sec->id); ?>" <?php echo e($sec->id == $img->contenttag_id ? 'selected="selected"' : ''); ?>><?php echo e($sec->name); ?></option>
+                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                       </select>
+                     </div>
+                   </div>
                  </div>
                </form>
              </div>
@@ -204,7 +247,7 @@
           <div class="form-group">
             <div class="row">
               <div class="col-md-9">
-                <input type="text" name="section_title" class="form-control" value="<?php echo e($section->title); ?>" placeholder="Section title" required>
+                <input type="text" name="section_title" class="form-control" value="<?php echo e($section->name); ?>" placeholder="Section title" required>
               </div>
               <input type="hidden" name="section_id" value="<?php echo e($section->id); ?>">
               <div class="col-md-3">
@@ -265,7 +308,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Are you sure want to delete this content "<?php echo e($section->title); ?>". Section and all contents on it ?</p>
+        <p>Are you sure want to delete this content "<?php echo e($section->name); ?>". Section and all contents on it ?</p>
           <input type="hidden" name="content_id" value="<?php echo e($section->id); ?>">
           <div class="form-group">
             <div class="row justify-content-center">

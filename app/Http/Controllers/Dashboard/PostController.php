@@ -1365,7 +1365,7 @@ public function imagestore(Request $request)
      public function show_gallery_index(Request $request)
      {
        $company_id=$request->session()->get('chat_admin')->company_id;
-       $sections=DB::table('wingg_app_section')->where('company_id',$company_id)->orderBy('id','asc')->get();
+       $sections=DB::table('wingg_app_contenttag')->where('company_id',$company_id)->orderBy('id','asc')->get();
        // dd($sections);
        return view('admin.gallery.gallery-index',compact('sections'));
 
@@ -1381,9 +1381,8 @@ public function imagestore(Request $request)
        $main_id = $data[1];
       }
 
-       // dd($type.'/'.$id);
-       $company_id=$request->session()->get('chat_admin')->company_id;
-       $sections=DB::table('wingg_app_section')->where('company_id',$company_id);
+      $company_id=$request->session()->get('chat_admin')->company_id;
+      $sections=DB::table('wingg_app_contenttag')->where('company_id',$company_id);
        if ($main_type !='') {
         $sections->where('type',$main_type);
        }
@@ -1399,7 +1398,7 @@ public function imagestore(Request $request)
      {
        // dd($request->all());
        $company_id=$request->session()->get('chat_admin')->company_id;
-           $input['title']=$request->input('title');
+           $input['name']=$request->input('title');
            $input['company_id']=$company_id;
            $get_type = $request->input('type');
            $data = explode(',',$get_type);
@@ -1410,52 +1409,74 @@ public function imagestore(Request $request)
            $input['created_at']=  date('Y-m-d H:i:s');
            $input['updated_at']=  date('Y-m-d H:i:s');
            // dd($input);
-           $section=DB::table('wingg_app_section')->insertGetId( $input);
+           $section=DB::table('wingg_app_contenttag')->insertGetId( $input);
            echo $section;
 
      }
      public function galleryimagestore(Request $request)
-         {
-            // dd($request->all());
-             if($request->isMethod('post')){
-              //  dd($request->all());
-             $company_id=$request->session()->get('chat_admin')->company_id;
-                 $input['title']=$request->input('post_title');
-                 $input['company_id']=$company_id;
-                 $input['section_id']=$request->input('section_id');
-                 $input['created_at']=  date('Y-m-d H:i:s');
-                 $input['updated_at']=  date('Y-m-d H:i:s');
-                  $image = $request->file('cover_image');
-                  $file = $request->file('file');
-                  // dd($file->getClientMimeType());
-                 if ($image !="") {
-                 $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
-                 $destinationPath = public_path('gallery/cover');
-                 $image->move($destinationPath, $profilePicture);
-                 $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/gallery/cover/'.$profilePicture;
-                 $input['cover_image']=$imagepath;
-                 }
-
-                 if ($file !="") {
-                 $profilePictures = 'file-'.time().'-'.rand(000000,999999).'.'.$file->getClientOriginalExtension();
-                 $destinationPaths = public_path('gallery/images');
-                 $file->move($destinationPaths, $profilePictures);
-                 $imagepaths='http://phplaravel-375170-1174358.cloudwaysapps.com/gallery/images/'.$profilePictures;
-                 $input['image']=$imagepaths;
-                 }
-                 // dd($input);
-                $post_id=DB::table('wingg_app_gallery')->insertGetId($input);
-                $data['order']=$post_id;
-                $post=DB::table('wingg_app_gallery')->where('id',$post_id)->update($data);
-
-     		   if($post_id !=0){
-     			   $request->session()->flash('post', 'Content Created Sussessfully');
-                 //return redirect('/dashboard');
-            echo $post_id;
-           }
-             }
-            // return view('admin.add-post');
+     {
+       // dd($request->all());
+       if($request->isMethod('post')){
+         //  dd($request->all());
+         $company_id=$request->session()->get('chat_admin')->company_id;
+         $section_id=$request->input('section_id');
+         $section_info = DB::table('wingg_app_contenttag')->where('id',$section_id)->first();
+         // dd($section_info);
+         $input['title']=$request->input('post_title');
+         $input['media_type']=$request->input('media_type');
+         $input['views']=0;
+         $input['likes']=0;
+         $input['dislikes']=0;
+         $input['dislikes']=0;
+         $input['length']=1;
+         $input['type']=$section_info->type;
+         $input['team_role_id']=$section_info->team_role_id;
+         // $input['company_id']=$company_id;
+         $input['contenttag_id']=$section_id;
+         $input['created_at']=  date('Y-m-d H:i:s');
+         $input['updated_at']=  date('Y-m-d H:i:s');
+         $image = $request->file('cover_image');
+         $file = $request->file('file');
+         // dd($file->getClientMimeType());
+         if ($image !="") {
+           $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
+           $destinationPath = public_path('gallery/cover');
+           $image->move($destinationPath, $profilePicture);
+           $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/gallery/cover/'.$profilePicture;
+           $input['thumbnail']=$imagepath;
          }
+
+         if ($file !="") {
+           $profilePictures = 'file-'.time().'-'.rand(000000,999999).'.'.$file->getClientOriginalExtension();
+           $destinationPaths = public_path('gallery/images');
+           $file->move($destinationPaths, $profilePictures);
+           $imagepaths='http://phplaravel-375170-1174358.cloudwaysapps.com/gallery/images/'.$profilePictures;
+           $input['url']=$imagepaths;
+         }
+         // dd($input);
+         $post_id=DB::table('wingg_app_content')->insertGetId($input);
+         $data['order']=$post_id;
+         $post=DB::table('wingg_app_content')->where('id',$post_id)->update($data);
+         $content_tag['content_id'] = $post_id;
+         $content_tag['contenttag_id'] = $section_id;
+         $content_tag_id = DB::table('wingg_app_content_tags')->insertGetId($content_tag);
+         if ($section_info->type == "team") {
+           $content_tagteam['content_tag_id'] = $content_tag_id;
+           $content_tagteam['team_id'] = $section_info->team_role_id;
+           $con_tagteam = DB::table('wingg_app_contenttagteam')->insert($content_tagteam);
+         }else {
+           $content_tagpos['content_tag_id'] = $content_tag_id;
+           $content_tagpos['position_id'] = $section_info->team_role_id;
+           $con_tagpos = DB::table('wingg_app_contenttagposition')->insert($content_tagpos);
+         }
+         if($post_id !=0){
+           $request->session()->flash('post', 'Content Created Sussessfully');
+           //return redirect('/dashboard');
+           echo $post_id;
+         }
+       }
+       // return view('admin.add-post');
+     }
 
          public function reorder_images(Request $request)
          {
@@ -1471,7 +1492,7 @@ public function imagestore(Request $request)
              $input['order']=$imageOrder;
              // dd($imageOrder.'/'.$imageId);
              // dd($input,$imageId);
-             $data = DB::table('wingg_app_gallery')->where('id',$imageId)->update($input);
+             $data = DB::table('wingg_app_content')->where('id',$imageId)->update($input);
              // dd($data);
              $response = 'Images order is updated';
              // if ($data !=0) {
@@ -1488,17 +1509,25 @@ public function imagestore(Request $request)
          {
            // dd($request->all());
            $id = $request->input('content_id');
+           // dd($id);
            $input['title']=$request->input('title');
+           $get_type = $request->input('type');
+           $data = explode(',',$get_type);
+           $type = $data[0];
+           $type_id = $data[1];
+           $input['type']=$type;
+           $input['team_role_id']=$type_id;
+           $input['contenttag_id']=$request->input('section');
            $image = $request->file('cover_image');
            if ($image !="") {
              $profilePicture = 'cover_image-'.time().'-'.rand(000000,999999).'.'.$image->getClientOriginalExtension();
              $destinationPath = public_path('gallery/cover');
              $image->move($destinationPath, $profilePicture);
              $imagepath='http://phplaravel-375170-1174358.cloudwaysapps.com/gallery/cover/'.$profilePicture;
-             $input['cover_image']=$imagepath;
+             $input['thumbnail']=$imagepath;
            }
-           // dd($input);
-           $post_id=DB::table('wingg_app_gallery')->where('id',$id)->update($input);
+           // dd($id);
+           $post_id=DB::table('wingg_app_content')->where('id',$id)->update($input);
            $request->session()->flash('post', 'Content Updated Sussessfully');
            return redirect('/dashboard/gallery');
          }
@@ -1506,7 +1535,7 @@ public function imagestore(Request $request)
          public function delete_content(Request $request, $id)
          {
            // dd($id);
-           $content = DB::table('wingg_app_gallery')->where('id',$id)->delete();
+           $content = DB::table('wingg_app_content')->where('id',$id)->delete();
            $request->session()->flash('post', 'Content Deleted Sussessfully');
            return redirect('/dashboard/gallery');
          }
@@ -1515,10 +1544,10 @@ public function imagestore(Request $request)
          {
            // dd($request->all());
                $section_id=$request->input('section_id');
-               $sec_info = DB::table('wingg_app_section')->where('id',$section_id)->first();
-               $content_info = DB::table('wingg_app_gallery')->where('section_id',$section_id)->get();
+               $sec_info = DB::table('wingg_app_contenttag')->where('id',$section_id)->first();
+               $content_info = DB::table('wingg_app_content')->where('contenttag_id',$section_id)->get();
                // dd($content_info);
-               $input['title']=$request->input('section_title');
+               $input['name']=$request->input('section_title');
                $input['company_id']=$sec_info->company_id;
                $get_type = $request->input('type');
                if ($get_type !="") {
@@ -1535,19 +1564,37 @@ public function imagestore(Request $request)
              $input['created_at']=  date('Y-m-d H:i:s');
              $input['updated_at']=  date('Y-m-d H:i:s');
              // dd($input);
-             $sec_id = DB::table('wingg_app_section')->insertGetId($input);
+             $sec_id = DB::table('wingg_app_contenttag')->insertGetId($input);
 
              foreach ($content_info as $key => $value) {
-               $data2['section_id'] = $sec_id;
-               $data2['company_id'] = $value->company_id;
+               $data2['contenttag_id'] = $sec_id;
+               if ($get_type !="") {
+                 // dd($get_type);
+               $data = explode(',',$get_type);
+               $type = $data[0];
+               $id = $data[1];
+               $data2['type']=$type;
+               $data2['team_role_id']=$id;
+             }else {
+               $data2['type']=$value->type;
+               $data2['team_role_id']=$value->team_role_id;
+             }
+               // $data2['company_id'] = $value->company_id;
                $data2['title'] = $value->title;
-               $data2['image'] = $value->image;
-               $data2['cover_image'] = $value->cover_image;
+               $data2['url'] = $value->url;
+               $data2['media_type']=$value->media_type;
+               $data2['views']=0;
+               $data2['likes']=0;
+               $data2['dislikes']=0;
+               $data2['dislikes']=0;
+               $data2['length']=1;
+               $data2['thumbnail'] = $value->thumbnail;
                $data2['created_at']=  date('Y-m-d H:i:s');
                $data2['updated_at']=  date('Y-m-d H:i:s');
-               $cont_id = DB::table('wingg_app_gallery')->insertGetId($data2);
+               // dd($data2);
+               $cont_id = DB::table('wingg_app_content')->insertGetId($data2);
                $data3['order']=$cont_id;
-               $cont2 =DB::table('wingg_app_gallery')->where('id',$cont_id)->update($data3);
+               $cont2 =DB::table('wingg_app_content')->where('id',$cont_id)->update($data3);
                // dd($data2);
              }
            $request->session()->flash('post', 'Section Duplicated Sussessfully');
@@ -1558,7 +1605,7 @@ public function imagestore(Request $request)
          {
            // dd($request->all());
            $id = $request->input('section_id');
-           $input['title']=$request->input('section_title');
+           $input['name']=$request->input('section_title');
            $get_type = $request->input('type');
            if ($get_type !="") {
              // dd($get_type);
@@ -1569,7 +1616,7 @@ public function imagestore(Request $request)
            $input['team_role_id']=$type_id;
          }
            // dd($input);
-           $post_id=DB::table('wingg_app_section')->where('id',$id)->update($input);
+           $post_id=DB::table('wingg_app_contenttag')->where('id',$id)->update($input);
            $request->session()->flash('post', 'Section Updated Sussessfully');
            return redirect('/dashboard/gallery');
          }
@@ -1577,8 +1624,8 @@ public function imagestore(Request $request)
          public function delete_section(Request $request, $id)
          {
            // dd($id);
-           $section = DB::table('wingg_app_section')->where('id',$id)->delete();
-           $section = DB::table('wingg_app_gallery')->where('section_id',$id)->delete();
+           $section = DB::table('wingg_app_contenttag')->where('id',$id)->delete();
+           $section = DB::table('wingg_app_content')->where('contenttag_id',$id)->delete();
            $request->session()->flash('post', 'Section Deleted Sussessfully');
            return redirect('/dashboard/gallery');
          }
@@ -1597,21 +1644,33 @@ public function imagestore(Request $request)
            }
            // dd($type.'/'.$type_id);
            $company_id=$request->session()->get('chat_admin')->company_id;
-           $sections = DB::table('wingg_app_section')->where('wingg_app_section.company_id','=',$company_id);
+           $sections = DB::table('wingg_app_contenttag')->where('wingg_app_contenttag.company_id','=',$company_id);
            if ($type !=null) {
-             $sections->where('wingg_app_section.type','=',$type);
+             $sections->where('wingg_app_contenttag.type','=',$type);
            }
            if ($type_id !=null) {
-             $sections->where('wingg_app_section.team_role_id','=',$type_id);
+             $sections->where('wingg_app_contenttag.team_role_id','=',$type_id);
            }
            $sections =$sections->get();
            foreach ($sections as &$sec) {
-             $sec->gallery=DB::table('wingg_app_gallery')->where('section_id',$sec->id)->where('wingg_app_gallery.title', 'ilike', '%' . $keyword . '%')->get()->toArray();
+             $sec->gallery=DB::table('wingg_app_content')->where('contenttag_id',$sec->id)->where('wingg_app_content.title', 'ilike', '%' . $keyword . '%')->get()->toArray();
            }
            return view('admin.gallery.ajaxgallery',compact('sections'));
          }
-            // function returndup($arr)
-            // {
-            //   return array_diff_key($arr, array_unique($arr));
-            // }
+
+         public function sectionReorder(Request $request)
+         {
+           // dd($request->all());
+           $id = $request->input('id');
+           $sec = DB::table('wingg_app_contenttag')->where('id',$id)->first();
+           $order = $sec->order;
+           $company_id = $sec->company_id;
+           $type = $sec->type;
+           $team_role_id = $sec->team_role_id;
+           $check_sec = DB::table('wingg_app_contenttag')->where('company_id',$company_id)
+                        ->where('type',$type)->where('team_role_id',$team_role_id)
+                        ->where('order','<',$order)->get();
+           dd($check_sec);
+         }
+
 }
